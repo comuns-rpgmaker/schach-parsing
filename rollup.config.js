@@ -13,7 +13,8 @@ export default [
         output: [
             {
                 file: `${__dirname}/dist/js/plugins/${pkg.name}.js`,
-                format: 'cjs',
+                name: 'Schach.Parsing',
+                format: 'iife',
                 sourcemap: false,
                 plugins: [
                     terser({
@@ -27,9 +28,9 @@ export default [
                 ]
             },
             {
-                file: `${pkg.testProjectDir || `${__dirname}/dist`}/js/plugins${pkg.name}.debug.js`,
-                format: 'cjs',
-                
+                file: `${pkg.testProjectDir || `${__dirname}/dist`}/js/plugins/${pkg.name}.debug.js`,
+                name: 'Schach.Parsing',
+                format: 'iife',                
                 sourcemap: true,
                 banner: header
             }
