@@ -1,5 +1,5 @@
-import { Parser, pure, oneOf, many, many1 } from './parser';
-import { char, digit, string } from './text';
+import { Parser, pure, oneOf, many1 } from './parser';
+import { char, digit, string, spaces } from './text';
 
 type Operator = ((a: number, b: number) => number) & { priority: number };
 
