@@ -18,8 +18,6 @@ export default [
                 sourcemap: false,
                 plugins: [
                     terser({
-                        keep_fnames: true,
-                        toplevel: true,
                         format: {
                             comments: false,
                             preamble: header
