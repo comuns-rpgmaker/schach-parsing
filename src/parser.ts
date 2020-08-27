@@ -1,7 +1,10 @@
 /**
+ * 
  * @file parser.ts
+ * 
  * @author Brandt
  * @date 2020/08/25
+ * @license Zlib
  * 
  * Parser class definition.
  * 
@@ -36,6 +39,9 @@ export type ParseFailure<T, S> = {
 
     /** Partial value that was successfully parsed, if it exists */
     parsed?: S,
+
+    /** Context value given to identify where parsing failed */
+    context: T,
 
     /** Content remaining to be parsed */
     rest: T
@@ -103,7 +109,7 @@ export abstract class Parser<T, S>
      * @param f - function mapping from a partial parsed value to an error
      *            message.
      */
-    error(f: (actual?: S) => string): Parser<T, S>
+    error(f: (partial?: S, context?: T) => string): Parser<T, S>
     {
         return new ParserMapError(this, f);
     }
@@ -113,9 +119,34 @@ export abstract class Parser<T, S>
      * 
      * @param fallback - parser to fallback to on failure.
      */
-    or<U>(fallback: Parser<T, U>): Parser<T, S | U>
+    or<U>(fallback: Parser<T, U> | (() => Parser<T, U>)): Parser<T, S | U>
     {
         return new ParserDisjunction(this, fallback);
+    }
+    
+    /**
+     * Applies another parser after this, then ignore its result.
+     * 
+     * @param other - parser to run after this parser.
+     */
+    thenDrop(
+        other: Parser<T, unknown> | (() => Parser<T, unknown>)
+    ): Parser<T, S>
+    {        
+        return this.flatMap(value =>
+            (typeof other === 'function' ? other() : other).map(() => value));
+    }
+
+    /**
+     * Applies another parser after this, then use its result and ignore the
+     * result of this parser.
+     * 
+     * @param other - parser to run after this parser.
+     */
+    dropThen<U>(other: Parser<T, U> | (() => Parser<T, U>)): Parser<T, U>
+    {
+        return this.flatMap(() =>
+            typeof other === 'function' ? other() : other);
     }
 }
 
@@ -216,13 +247,13 @@ class ParserMap<T, S, U> extends Parser<T, U>
 class ParserDisjunction<T, S, U> extends Parser<T, S | U>
 {
     private readonly _parser: Parser<T, S>;
-    private readonly _fallback: Parser<T, U>;
+    private readonly _fallback: Parser<T, U> | (() => Parser<T, U>);
 
     /**
      * @param parser - original parser.
      * @param fallback - fallback parser.
      */
-    constructor(parser: Parser<T, S>, fallback: Parser<T, U>)
+    constructor(parser: Parser<T, S>, fallback: Parser<T, U> | (() => Parser<T, U>))
     {
         super();
         this._parser = parser;
@@ -233,8 +264,21 @@ class ParserDisjunction<T, S, U> extends Parser<T, S | U>
     {
         const result = this._parser.run(input);
 
-        if (result.success) return result;
-        else return this._fallback.run(input);
+        if (result.success)
+        {
+            return result;
+        }
+        else
+        {
+            if (typeof this._fallback === 'function')
+            {
+                return this._fallback().run(input);
+            }
+            else
+            {
+                return this._fallback.run(input);
+            }
+        }
     }
 }
 
@@ -247,26 +291,38 @@ class ParserDisjunction<T, S, U> extends Parser<T, S | U>
 class ParserMapError<T, S> extends Parser<T, S>
 {
     private readonly _parser: Parser<T, S>;
-    private readonly _mapper: (value?: S) => string;
+    private readonly _mapper: (value?: S, context?: T) => string;
 
     /**
      * @param parser - original parser.
      * @param functor - mapping from the range of the original parser to an
      *                  error message.
      */
-    constructor(parser: Parser<T, S>, mapper: (value?: S) => string)
+    constructor(
+        parser: Parser<T, S>,
+        mapper: (value?: S, context?: T) => string
+    )
     {
         super();
         this._parser = parser;
-        this._mapper = mapper;    
+        this._mapper = mapper;
     }
 
     run(input: T): ParseResult<T, S>
     {
         const result = this._parser.run(input);
 
-        if (result.success) return result;
-        else return { ...result, message: this._mapper(result.parsed) };
+        if (result.success)
+        {
+            return result;
+        }
+        else
+        {
+            return {
+                ...result,
+                message: this._mapper(result.parsed, result.context)
+            };
+        }
     }
 }
 
@@ -300,7 +356,7 @@ class PureParser<T, S> extends Parser<T, S>
 }
 
 /**
- * Creates a parser that just always a value without consuming any input.
+ * Creates a parser that always returns a value without consuming any input.
  * 
  * @param value - value to be returned.
  */
@@ -316,7 +372,8 @@ export function pure<T, S>(value: S): Parser<T, S>
  */
 export function sequence<T, S>(...parsers: Parser<T, S>[]): Parser<T, S[]>
 {
-    return parsers.slice(1)
+    return parsers
+        .slice(1)
         .reduce((parser, current) =>
             parser.flatMap(mine =>
                 current.map(theirs => mine.concat(theirs))),
@@ -335,77 +392,25 @@ export function oneOf<T, S>(...parsers: Parser<T, S>[]): Parser<T, S>
 }
 
 /**
- * Parses a single UTF-16 code point.
+ * Returns a parser that accepts one or more repetitions of a given parser and
+ * returns a list of the parsed values.
+ * 
+ * @see many
+ * @param parser - parser to repeat.
  */
-class CharParser extends Parser<string, number>
+export function many1<T, S>(parser: Parser<T, S>): Parser<T, S[]>
 {
-    private readonly _codePoint: number;
-
-    /**
-     * @param codePoint - UTF-16 code point to accept.
-     */
-    constructor(codePoint: number)
-    {
-        super();
-        this._codePoint = codePoint;
-    }
-
-    run(input: string): ParseResult<string, number>
-    {
-        const inputCodePoint = input.codePointAt(0);
-
-        if (inputCodePoint === this._codePoint)
-        {
-            return {
-                success: true,
-                parsed: this._codePoint,
-                rest: input.substr(1)
-            };
-        }
-        else
-        {
-            const expected = String.fromCodePoint(this._codePoint);
-
-            const actual = typeof inputCodePoint === 'number'
-                            ? String.fromCodePoint(inputCodePoint)
-                            : '<eos>';
-
-            return {
-                success: false,
-                message: `expected '${expected}', got '${actual}'`,
-                rest: input
-            };
-        }
-    }
+    return parser
+        .flatMap(head => many(parser).map(tail => [head].concat(tail)));
 }
 
 /**
- * Creates a parser for a single character.
+ * Returns a parser that accepts zero or more repetitions of a given parser and
+ * returns a list of the parsed values.
  * 
- * @param c - character or UTF-16 code point to be parsed.
+ * @param parser - parser to repeat.
  */
-export function char(c: string | number): CharParser
+export function many<T, S>(parser: Parser<T, S>): Parser<T, S[]>
 {
-    if (typeof c == 'string')
-    {
-        const codePoint = c.codePointAt(0);
-        if (codePoint === undefined) throw 'string is empty';
-        c = codePoint;
-    }
-
-    return new CharParser(c);
-}
-
-/**
- * Creates a parser for a string.
- * 
- * @param c - character or UTF-16 code point to be parsed.
- */
-export function string(s: string): Parser<string, string>
-{
-    return sequence(...Array.from(s).map(char))
-        .map(
-            codePoints => String.fromCodePoint(...codePoints)
-        )
-        .error(actual => `expected "${s}", got "${actual || ''}"`);
+    return many1(parser).or(pure([]));
 }
