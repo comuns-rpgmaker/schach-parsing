@@ -1,17 +1,20 @@
 //=============================================================================
-// RMMZ - Typescript Plugin Archetype
+// Schach - Parsing
 //=============================================================================
 
 /*:
  *
  * @target MZ
- * @plugindesc Typescript Plugin Archetype.
- * @author Comuns
+ * @plugindesc Parsing core library.
+ * @author Brandt
  * 
- * @help Typescript Plugin Archetype.
+ * @url https://github.com/comuns-rpgmaker/schach-parsing
  * 
- * This is a plugin archetype, it does not provide any functionality, only a
- * template for other plugins.
+ * @help Schach Parsing.
+ * 
+ * This is a core library for expression parsing. This script does not provide
+ * any functionality by itself, only functions that ought to be used by other
+ * scripts to make sense of generic user input.
  *
  */
 
