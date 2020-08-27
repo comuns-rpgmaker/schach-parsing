@@ -21,7 +21,7 @@ const OPERATORS: Record<string, Operator> = {
     '^': Operator(2, Math.pow)
 };
 
-const before = (a: Operator, b: Operator): boolean => a.priority > b.priority;
+const before = (a: Operator, b: Operator): boolean => a.priority >= b.priority;
 
 /**
  * Type for an expression with a simple number.
