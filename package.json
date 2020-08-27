@@ -1,6 +1,6 @@
 {
   "name": "schach-parsing",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "RPG Maker MZ Typescript Plugin Archetype",
   "testProjectDir": "../..",
   "scripts": {
