@@ -25,15 +25,15 @@ export function integer(): Parser<string, number>
             .map(digits => digits.reduce((acc, n) => acc * 10 + n));
 }
 
-const floatingPoint = 
-    char('.')
-    .flatMap(() => many1(digit()))
-    .map(digits => digits.reduceRight((acc, n) => n + acc / 10) / 10);
-
 const sign =
     char('-').thenDrop(spaces).dropThen(pure(-1))
     .or(char('+').dropThen(pure(1)))
     .or(pure(1));
+
+const floatingPoint = 
+    char('.')
+    .dropThen(many1(digit()))
+    .map(digits => digits.reduceRight((acc, n) => n + acc / 10) / 10);
 
 const exponent =
     char('e')
@@ -51,8 +51,8 @@ export function number(): Parser<string, number>
         integer()
         .flatMap(n => floatingPoint.map(f => bit * (n + f)).or(pure(n)))
         .or(floatingPoint)
-        .error((_, context) => `expected number, got '${context}'`))
-        .flatMap(n => exponent.map(e => n * e));
+        .flatMap(n => exponent.map(e => n * e))
+        .error((_, context) => `expected number, got '${context}'`));
 }
 
 /**
