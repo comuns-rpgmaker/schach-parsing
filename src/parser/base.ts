@@ -1,59 +1,14 @@
 /**
- * 
- * @file parser.ts
+ * @file result.ts
  * 
  * @author Brandt
- * @date 2020/08/25
+ * @date 2020/08/27
  * @license Zlib
  * 
- * Parser class definition.
- * 
+ * Core definition of the Parser class.
  */
 
-/**
- * Parsing success result type.
- * 
- * @template T - type to parse from.
- * @template S - type to parse to.
- */
-export type ParseSuccess<T, S> = {
-    success: true,
-
-    /** Parsed value */
-    parsed: S,
-
-    /** Content remaining to be parsed */
-    rest: T
-};
-
-/**
- * Parsing failure result type.
- * 
- * @template T - type to parse from.
- */
-export type ParseFailure<T, S> = {
-    success: false,
-
-    /** Failure description */
-    message: string,
-
-    /** Partial value that was successfully parsed, if it exists */
-    parsed?: S,
-
-    /** Context value given to identify where parsing failed */
-    context: T,
-
-    /** Content remaining to be parsed */
-    rest: T
-};
-
-/**
- * Parsing result type.
- * 
- * @template T - type to parse from.
- * @template S - type to parse to.
- */
-export type ParseResult<T, S> = ParseSuccess<T, S> | ParseFailure<T, S>;
+import type { ParseResult } from './result';
 
 /**
  * Basic parser class.
@@ -363,54 +318,4 @@ class PureParser<T, S> extends Parser<T, S>
 export function pure<T, S>(value: S): Parser<T, S>
 {
     return new PureParser(value);
-}
-
-/**
- * Applies parsers in sequence and groups the results into an array.
- * 
- * @param parsers - list of parsers to apply.
- */
-export function sequence<T, S>(...parsers: Parser<T, S>[]): Parser<T, S[]>
-{
-    return parsers
-        .slice(1)
-        .reduce((parser, current) =>
-            parser.flatMap(mine =>
-                current.map(theirs => mine.concat(theirs))),
-            parsers[0].map(Array.of)
-        );
-}
-
-/**
- * Chains parsers with "or".
- * 
- * @param parsers - list of alternatives.
- */
-export function oneOf<T, S>(...parsers: Parser<T, S>[]): Parser<T, S>
-{
-    return parsers.reduce((parser, current) => parser.or(current));
-}
-
-/**
- * Returns a parser that accepts one or more repetitions of a given parser and
- * returns a list of the parsed values.
- * 
- * @see many
- * @param parser - parser to repeat.
- */
-export function many1<T, S>(parser: Parser<T, S>): Parser<T, S[]>
-{
-    return parser
-        .flatMap(head => many(parser).map(tail => [head].concat(tail)));
-}
-
-/**
- * Returns a parser that accepts zero or more repetitions of a given parser and
- * returns a list of the parsed values.
- * 
- * @param parser - parser to repeat.
- */
-export function many<T, S>(parser: Parser<T, S>): Parser<T, S[]>
-{
-    return many1(parser).or(pure([]));
 }

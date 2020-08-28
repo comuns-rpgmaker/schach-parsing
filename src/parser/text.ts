@@ -1,4 +1,16 @@
-import { Parser, ParseResult, sequence, oneOf, many } from './parser';
+/**
+ * @file text.ts
+ * 
+ * @author Brandt
+ * @date 2020/08/27
+ * @license Zlib
+ * 
+ * Functions for text-related string parsers.   
+ */
+
+import { Parser } from './base';
+import { ParseResult } from './result';
+import { sequence, oneOf, many } from './combinators';
 
 /**
  * Parses a single UTF-16 code point.

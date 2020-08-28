@@ -1,5 +1,3 @@
-import * as Parser from '../src/parser';
-import * as Arithmetic from '../src/arithmetic';
-import * as Text from '../src/text';
+import * as Parser from './parser';
 
-export default { ...Parser, Arithmetic, Text };
+export default Parser;
