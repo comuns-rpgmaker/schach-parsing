@@ -2,8 +2,10 @@
   "name": "schach-parsing",
   "version": "0.1.1",
   "description": "RPG Maker MZ Typescript Plugin Archetype",
+  "namespace": "Schach.Parsing",
   "testProjectDir": "../..",
   "scripts": {
+    "prebuild": "mz-mtdt -i ./plugin-metadata.yaml -o dist/annotations.js",
     "build": "rollup -c",
     "test": "ts-node node_modules/jasmine/bin/jasmine"
   },
@@ -13,6 +15,7 @@
   "author": "Comuns",
   "license": "Zlib",
   "devDependencies": {
+    "@comuns-rpgmaker/plugin-metadata": "^0.2.1",
     "@rollup/plugin-typescript": "^5.0.2",
     "@types/jasmine": "^3.5.13",
     "@types/node": "^14.6.0",

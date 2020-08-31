@@ -1,0 +1,26 @@
+target: MZ
+author: Brandt
+url: https://github.com/comuns-rpgmaker/schach-parsing
+
+languages:
+    - pt
+
+description:
+    default: Parsing core library.
+    pt: Core de processamento de texto.
+
+help:
+    default: |-  
+        Schach Parsing.
+        
+        This is a core library for expression parsing. This script does not
+        provide any functionality by itself, only functions that ought to be
+        used by other scripts to make sense of generic user input.
+    
+    pt: |-  
+        Schach Parsing.
+        
+        Este plugin é uma biblioteca de processamento de texto. Ele não
+        adiciona nenhuma funcionalidade por si só, apenas funções que podem ser
+        utilizadas por outros plugins para processar e utilizar entradas
+        genéricas do usuário.

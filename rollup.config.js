@@ -5,7 +5,9 @@ import { readFileSync } from 'fs';
 
 import pkg from './package.json';
 
-const header = readFileSync('header.js', 'utf-8');
+const header = readFileSync(`${__dirname}/dist/annotations.js`)
+                + '\n'
+                + readFileSync('header.js', 'utf-8');
 
 export default [
 	{
@@ -13,7 +15,7 @@ export default [
         output: [
             {
                 file: `${__dirname}/dist/js/plugins/${pkg.name}.js`,
-                name: 'Schach.Parsing',
+                name: pkg.namespace,
                 format: 'iife',
                 sourcemap: false,
                 plugins: [
@@ -27,8 +29,8 @@ export default [
             },
             {
                 file: `${pkg.testProjectDir || `${__dirname}/dist`}/js/plugins/${pkg.name}.debug.js`,
-                name: 'Schach.Parsing',
-                format: 'iife',                
+                name: pkg.namespace,
+                format: 'iife',
                 sourcemap: true,
                 banner: header
             }
