@@ -1,0 +1,165 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>schach-parsing</title>
+	<meta name="description" content="Documentation for schach-parsing">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="assets/js/search.json" data-base=".">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="index.html" class="title">schach-parsing</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+							<input type="checkbox" id="tsd-filter-only-exported" />
+							<label class="tsd-widget" for="tsd-filter-only-exported">Only exported</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="globals.html">Globals</a>
+				</li>
+			</ul>
+			<h1>schach-parsing</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<div class="tsd-panel tsd-typography">
+				<a href="#schach---parsing" id="schach---parsing" style="color: inherit; text-decoration: none;">
+					<h1>Schach - Parsing</h1>
+				</a>
+				<p><strong>IMPORTANT:</strong> this plugin is still in its early development stages, and
+					drastic API changes can (and probably will) occur without previous notice. We
+				do not recommend using it for actual plugins at the moment.</p>
+				<p>This plugin provides a core library with Parsing functionality.</p>
+				<p><strong>Example usage:</strong></p>
+				<pre><code class="language-typescript">&gt; <span class="hljs-keyword">let</span> { parsed: expr } = Schach.Parsing.Arithmetic.expression().run(<span class="hljs-string">&quot;1 + 2 + 3 + 4 * 5 + 6&quot;</span>)
+&lt; <span class="hljs-literal">undefined</span>
+
+&gt; Schach.Parsing.Arithmetic.evaluate(expr)
+&lt; <span class="hljs-number">32</span></code></pre>
+				<a href="#getting-started-developers" id="getting-started-developers" style="color: inherit; text-decoration: none;">
+					<h2>Getting Started (Developers)</h2>
+				</a>
+				<p>First of all, make sure you run <code>npm install</code> to install all the dependencies
+				for the project, such as <a href="https://rollupjs.org/">rollup.js</a> and typescript.</p>
+				<p>Once you are done, <code>npm run build</code> will create a JS file for your plugin as
+				<code>dist/js/plugins/schach-parsing.js</code>.</p>
+			</div>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="globals.html"><em>Globals</em></a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_main_.html">&quot;main&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_arithmetic_evaluate_.html">&quot;parser/arithmetic/evaluate&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_arithmetic_expression_.html">&quot;parser/arithmetic/expression&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_arithmetic_index_.html">&quot;parser/arithmetic/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_arithmetic_numbers_.html">&quot;parser/arithmetic/numbers&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_arithmetic_operators_.html">&quot;parser/arithmetic/operators&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_arithmetic_types_.html">&quot;parser/arithmetic/types&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_base_.html">&quot;parser/base&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_combinators_.html">&quot;parser/combinators&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_index_.html">&quot;parser/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_result_.html">&quot;parser/result&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="modules/_parser_text_.html">&quot;parser/text&quot;</a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
