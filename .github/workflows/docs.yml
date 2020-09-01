@@ -16,7 +16,7 @@ jobs:
       - name: Install Typescript & TypeDoc
         run: npm install -g typescript typedoc
       - name: Build with TypeDoc
-        run: typedoc --out docs src
+        run: typedoc --excludeNotExported  --excludePrivate --out docs src
       - name: Deploy to Github Pages
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
