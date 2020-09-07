@@ -15,8 +15,7 @@ import { TextParser, TextParseError, TextInput, TextOffset } from './base';
  * Single-character parser error type.
  */
 export type StringParserError = TextParseError & {
-    expected: string,
-    actual: string
+    expected: string
 };
 
 /**
@@ -53,13 +52,11 @@ export class StringParser extends TextParser<string, StringParserError>
         else
         {
             const expected = this._pattern;
-            const actual = input.content[input.offset.index] || '<eos>';
             return {
                 success: false,
                 error: {
                     context: input,
-                    expected,
-                    actual
+                    expected
                 },
                 rest: input
             };
