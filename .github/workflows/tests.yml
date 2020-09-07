@@ -1,4 +1,4 @@
-name: Docs
+name: Tests and Coverage
 on:
   push:
     branches:
@@ -13,11 +13,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: '12'
-      - name: Tests and Coverage
+      - name: Run tests
         run: |
           npm ci
           npm run coverage
-      - name: Upload to Codecov
+      - name: Upload report to Codecov
         uses: codecov/codecov-action@v1
         with:
           file: ./coverage/lcov.info
