@@ -10,25 +10,27 @@
 
 import { Parser } from '../base';
 
-import { char, spaces } from '../text';
+import { TextParser, char, spaces } from '../text';
 
-import { Expression } from './types';
+import { Expression } from './model';
 import { operation } from './operators';
-import { numberExpression as number } from './numbers';
-
-const parensExpr = (): Parser<string, Expression> =>
-    char('(')
-        .dropThen(spaces)
-        .dropThen(expression)
-        .thenDrop(spaces)
-        .thenDrop(char(')'));
+import { numberExpression } from './numbers';
 
 /**
  * @returns a parser that parses an arithmetic expression into a tree of
  *          operations/values.
  */
-export function expression(): Parser<string, Expression>
-{
-    const valueExpr = parensExpr().or(number());
-    return operation(valueExpr).or(valueExpr);
-}
+export const expression = Parser.of(
+    (): TextParser<Expression> =>
+    {
+        const parensExpr = Parser.of((): TextParser<Expression> =>
+            char('(')
+                .dropThen(spaces())
+                .flatMap(() => expression())
+                .thenDrop(spaces())
+                .thenDrop(char(')')));
+
+        const valueExpr = parensExpr().or(numberExpression());
+        
+        return operation(valueExpr)().or(valueExpr);
+    });

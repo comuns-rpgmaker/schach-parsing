@@ -28,18 +28,13 @@ export type ParseSuccess<T, S> = {
  * Parsing failure result type.
  * 
  * @template T - type to parse from.
+ * @template E - error type.
  */
-export type ParseFailure<T, S> = {
+export type ParseFailure<T, E> = {
     success: false,
 
-    /** Failure description */
-    message: string,
-
-    /** Partial value that was successfully parsed, if it exists */
-    parsed?: S,
-
-    /** Context value given to identify where parsing failed */
-    context: T,
+    /** Error context given to identify where parsing failed */
+    error: E,
 
     /** Content remaining to be parsed */
     rest: T
@@ -50,5 +45,6 @@ export type ParseFailure<T, S> = {
  * 
  * @template T - type to parse from.
  * @template S - type to parse to.
+ * @template E - error type.
  */
-export type ParseResult<T, S> = ParseSuccess<T, S> | ParseFailure<T, S>;
+export type ParseResult<T, S, E> = ParseSuccess<T, S> | ParseFailure<T, E>;

@@ -15,7 +15,8 @@ import { Parser, pure } from './base';
  * 
  * @param parsers - list of parsers to apply.
  */
-export function sequence<T, S>(...parsers: Parser<T, S>[]): Parser<T, S[]>
+export
+function sequence<T, S, E>(...parsers: Parser<T, S, E>[]): Parser<T, S[], E>
 {
     return parsers
         .slice(1)
@@ -31,7 +32,8 @@ export function sequence<T, S>(...parsers: Parser<T, S>[]): Parser<T, S[]>
  * 
  * @param parsers - list of alternatives.
  */
-export function oneOf<T, S>(...parsers: Parser<T, S>[]): Parser<T, S>
+export
+function oneOf<T, S, E>(...parsers: Parser<T, S, E>[]): Parser<T, S, E>
 {
     return parsers.reduce((parser, current) => parser.or(current));
 }
@@ -43,10 +45,11 @@ export function oneOf<T, S>(...parsers: Parser<T, S>[]): Parser<T, S>
  * @see many
  * @param parser - parser to repeat.
  */
-export function many1<T, S>(parser: Parser<T, S>): Parser<T, S[]>
+export
+function many1<T, S, E>(parser: Parser<T, S, E>): Parser<T, S[], E>
 {
-    return parser
-        .flatMap(head => many(parser).map(tail => [head].concat(tail)));
+    return parser.flatMap(head =>
+                many(parser).map(tail => [head].concat(tail)));
 }
 
 /**
@@ -55,7 +58,8 @@ export function many1<T, S>(parser: Parser<T, S>): Parser<T, S[]>
  * 
  * @param parser - parser to repeat.
  */
-export function many<T, S>(parser: Parser<T, S>): Parser<T, S[]>
+export
+function many<T, S, E>(parser: Parser<T, S, E>): Parser<T, S[], E>
 {
     return many1(parser).or(pure([]));
 }

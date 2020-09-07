@@ -8,7 +8,7 @@
  * Evaluation function definition.
  */
 
-import { Expression } from './types';
+import { Expression } from './model';
 
 /**
  * Evaluates a parsed tree of operations/values.
