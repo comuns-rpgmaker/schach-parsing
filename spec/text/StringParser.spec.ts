@@ -1,16 +1,16 @@
-import { string, text } from '../../src/parser/text';
+import { string } from '../../src/parser/text';
 
 describe('Running a string parser', () =>
 {
     describe('on the expected string', () =>
     {
         const parser = string('abc');
-        const result = parser.run(text('abcdef'));
+        const result = parser.run('abcdef');
 
         it('returns success', () => expect(result.success).toBeTrue());
 
         it('returns the parsed string', () =>
-        {            
+        {
             expect(result.success && result.parsed).toBe('abc');
         });
 
@@ -27,13 +27,13 @@ describe('Running a string parser', () =>
     describe('on the wrong string', () =>
     {
         const parser = string('abc');
-        const result = parser.run(text('afbecd'));
+        const result = parser.run('afbecd');
 
         it('returns failure', () => expect(result.success).toBeFalse());
 
         it('does not change the offsets on the rest', () =>
         {
-            expect(result.rest).toEqual(text('afbecd'));
+            expect(result.rest).toEqual('afbecd');
         });
 
         it('returns the expected string', () =>
@@ -49,31 +49,31 @@ describe('Running a string parser', () =>
 
         describe('on success', () =>
         {
-            const result = parser.run(text('a\nb\nc\nd\ne\nf'));
+            const result = parser.run('a\nb\nc\nd\ne\nf');
 
             it('increments the row offset on the rest', () =>
             {
-                expect(result.rest.offset.row).toEqual(3);
+                expect(result.context.offset.row).toEqual(3);
             });
 
             it('resets and increments the column offset on the rest', () =>
             {
-                expect(result.rest.offset.column).toEqual(2);
+                expect(result.context.offset.column).toEqual(2);
             });
         });
 
         describe('on failure', () =>
         {
-            const result = parser.run(text('a\nf\nb\ne\nc\nd'));
+            const result = parser.run('a\nf\nb\ne\nc\nd');
 
             it('maintains the row offset on the rest', () =>
             {
-                expect(result.rest.offset.row).toEqual(1);
+                expect(result.context.offset.row).toEqual(1);
             });
 
             it('maintains the column offset on the rest', () =>
             {
-                expect(result.rest.offset.column).toEqual(1);
+                expect(result.context.offset.column).toEqual(1);
             });
         });
     });

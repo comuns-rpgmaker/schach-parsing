@@ -1,11 +1,11 @@
-import { char, text } from '../../src/parser/text';
+import { char } from '../../src/parser/text';
 
 describe('Running a char parser', () =>
 {
     describe('on the expected char', () =>
     {
         const parser = char('a');
-        const result = parser.run(text('abcd'));
+        const result = parser.run('abcd');
 
         it('returns success', () => expect(result.success).toBeTrue());
 
@@ -16,7 +16,7 @@ describe('Running a char parser', () =>
 
         it('changes the offsets on the rest', () =>
         {
-            expect(result.rest.offset).toEqual({
+            expect(result.context.offset).toEqual({
                 index: 1,
                 column: 2,
                 row: 1
@@ -27,13 +27,13 @@ describe('Running a char parser', () =>
     describe('on the wrong char', () =>
     {
         const parser = char('a');
-        const result = parser.run(text('bcde'));
+        const result = parser.run('bcde');
 
         it('returns failure', () => expect(result.success).toBeFalse());
 
         it('does not change the offsets on the rest', () =>
         {
-            expect(result.rest).toEqual(text('bcde'));
+            expect(result.rest).toEqual('bcde');
         });
 
         it('returns the expected and actual characters', () =>
@@ -49,16 +49,16 @@ describe('Running a char parser', () =>
     describe('when the char is a line break', () =>
     {
         const parser = char('\n');
-        const result = parser.run(text('\nabc'));
+        const result = parser.run('\nabc');
 
         it('increments the row offset on the rest', () =>
         {
-            expect(result.rest.offset.row).toEqual(2);
+            expect(result.context.offset.row).toEqual(2);
         });
 
         it('resets the column offset on the rest', () =>
         {
-            expect(result.rest.offset.column).toEqual(1);
+            expect(result.context.offset.column).toEqual(1);
         });
     });
 });

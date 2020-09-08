@@ -9,14 +9,20 @@
  */
 
 import { ParseResult } from '../result';
-import { TextParser, TextParseError, TextInput, TextOffset } from './base';
+import { TextParser } from './base';
+import { TextContext, TextOffset } from './context';
 
 /**
  * Single-character parser error type.
  */
-export type CharParserError = TextParseError & {
+export type CharParserError = {
     expected: string,
     actual: string
+};
+
+type ResultWithContext = {
+    result: ParseResult<number, CharParserError>,
+    context: TextContext
 };
 
 /**
@@ -35,19 +41,18 @@ export class CharParser extends TextParser<number, CharParserError>
         this._codePoint = codePoint;
     }
 
-    run(input: TextInput): ParseResult<TextInput, number, CharParserError>
+    runT(input: string, context: TextContext): ResultWithContext
     {
-        const inputCodePoint = input.content.codePointAt(input.offset.index);
+        const inputCodePoint = input.codePointAt(context.offset.index);
 
         if (inputCodePoint === this._codePoint)
         {
             return {
-                success: true,
-                parsed: this._codePoint,
-                rest: {
-                    content: input.content,
-                    offset: this.applyOffset(input)
-                }
+                result: {
+                    success: true,
+                    parsed: this._codePoint,
+                },
+                context: context.withOffset(this.offset)
             };
         }
         else
@@ -56,27 +61,24 @@ export class CharParser extends TextParser<number, CharParserError>
             const actual = typeof inputCodePoint === 'undefined'
                             ? '<eos>'
                             : String.fromCodePoint(inputCodePoint);
-
             return {
-                success: false,
-                error: {
-                    context: input,
-                    expected,
-                    actual
+                result: {
+                    success: false,
+                    error: { expected, actual }
                 },
-                rest: input
+                context
             };
         }
     }
 
-    private applyOffset(input: TextInput): TextOffset
+    get offset(): TextOffset
     {
-        const newLine = this._codePoint == 10;
+        const newLine = this._codePoint === 10;
         
         return {
-            index: input.offset.index + 1,
-            column: newLine ? 1 : input.offset.column + 1,
-            row: input.offset.row + (newLine ? 1 : 0)
+            index: 1,
+            row: newLine ? 1 : 0,
+            column: 1
         };
     }
 }

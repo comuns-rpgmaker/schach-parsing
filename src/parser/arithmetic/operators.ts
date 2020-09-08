@@ -10,7 +10,7 @@
 
 import { Parser } from '../base';
 import { oneOf } from '../combinators';
-import { string, spaces, TextParser } from '../text';
+import { string, spaces, TextParser, StringParserError, CharParserError } from '../text';
 
 import { Operator, OperatorExpression, Expression } from './model';
 
@@ -38,7 +38,7 @@ const before = (left: Operator, right: Operator): boolean =>
 type LeftOperatorExpression = Omit<OperatorExpression, "right">;
 type OperatorOnlyExpression = Omit<LeftOperatorExpression, "left">;
 
-const operator: TextParser<OperatorOnlyExpression> =
+const operator: TextParser<OperatorOnlyExpression, StringParserError> =
     oneOf(...Object.keys(OPERATORS).map(string))
     .map(op => OPERATORS[op])
     .map(f => ({ type: 'operator', operator: f }) as OperatorOnlyExpression);
@@ -54,10 +54,10 @@ const balanceOperators =
  * @param valueExpr - parser to be used for the operands.
  * @returns a parser for an operation or a sequence of operations.
  */
-export const operation =
-    (valueExpr: TextParser<Expression>): () => TextParser<OperatorExpression> =>
+export const operation = (valueExpr: TextParser<Expression, CharParserError>):
+    () => TextParser<OperatorExpression, StringParserError> =>
     {
-        const self = Parser.of(() =>
+        const self = Parser.of((): TextParser<OperatorExpression, StringParserError> =>
             valueExpr
             .thenDrop(spaces())
             .flatMap(left => operator.map(op => ({ ...op, left })))

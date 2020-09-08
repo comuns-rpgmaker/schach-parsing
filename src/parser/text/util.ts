@@ -1,8 +1,24 @@
+/**
+ * @file base.ts
+ * 
+ * @author Brandt
+ * @date 2020/09/07
+ * @license Zlib
+ * 
+ * Utilitary text parsers.   
+ */
+
 import { Parser, pure } from '../base';
 import { ParseResult } from '../result';
 
 import { char, CharParserError } from './char'; 
-import { TextParser, TextInput } from './base';
+import { TextParser } from './base';
+import { TextContext } from './context';
+
+type ResultWithContext = {
+    result: ParseResult<number, CharParserError>,
+    context: TextContext
+};
 
 const CP_ZERO = 48;
 const CP_NINE = 57;
@@ -12,22 +28,18 @@ const CP_NINE = 57;
  */
 class DigitParser extends TextParser<number, CharParserError>
 {
-    run(input: TextInput): ParseResult<TextInput, number, CharParserError> {
-        const codePoint = input.content.codePointAt(input.offset.index);
+    runT(input: string, context: TextContext): ResultWithContext
+    {
+        const codePoint = input.codePointAt(context.offset.index);
 
         if (codePoint && CP_ZERO <= codePoint && codePoint <= CP_NINE)
         {
             return {
-                success: true,
-                parsed: this.codePointToInt(codePoint),
-                rest: {
-                    content: input.content,
-                    offset: {
-                        index: input.offset.index + 1,
-                        column: input.offset.column + 1,
-                        row: input.offset.row
-                    }
-                }
+                result: {
+                    success: true,
+                    parsed: this.codePointToInt(codePoint),
+                },
+                context: context.withOffset({ index: 1, column: 1 })
             };
         }
         else
@@ -37,13 +49,14 @@ class DigitParser extends TextParser<number, CharParserError>
                             : String.fromCodePoint(codePoint);
 
             return {
-                success: false,
-                error: {
-                    context: input,
-                    expected: '0-9',
-                    actual
+                result: {
+                    success: false,
+                    error: {
+                        expected: '0-9',
+                        actual
+                    }
                 },
-                rest: input
+                context
             };
         }
     }
@@ -62,5 +75,7 @@ export const digit = Parser.of(() => new DigitParser());
 /**
  * @returns a parser that matches any number of spaces.
  */
-export const spaces = Parser.of((): TextParser<string> =>
-    char(' ').flatMap(() => spaces()).or(pure('')));
+export const spaces = Parser.of((): TextParser<string, never> =>
+    char(' ')
+        .flatMap(s => spaces().map(t => s + t))
+        .or(pure('')));

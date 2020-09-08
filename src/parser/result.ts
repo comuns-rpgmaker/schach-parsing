@@ -11,40 +11,31 @@
 /**
  * Parsing success result type.
  * 
- * @template T - type to parse from.
  * @template S - type to parse to.
  */
-export type ParseSuccess<T, S> = {
+export type ParseSuccess<S> = {
     success: true,
 
     /** Parsed value */
-    parsed: S,
-
-    /** Content remaining to be parsed */
-    rest: T
+    parsed: S
 };
 
 /**
  * Parsing failure result type.
  * 
- * @template T - type to parse from.
  * @template E - error type.
  */
-export type ParseFailure<T, E> = {
+export type ParseFailure<E> = {
     success: false,
 
     /** Error context given to identify where parsing failed */
-    error: E,
-
-    /** Content remaining to be parsed */
-    rest: T
+    error: E
 };
 
 /**
  * Parsing result type.
  * 
- * @template T - type to parse from.
  * @template S - type to parse to.
  * @template E - error type.
  */
-export type ParseResult<T, S, E> = ParseSuccess<T, S> | ParseFailure<T, E>;
+export type ParseResult<S, E> = ParseSuccess<S> | ParseFailure<E>;

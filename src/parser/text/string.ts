@@ -9,13 +9,19 @@
  */
 
 import { ParseResult } from '../result';
-import { TextParser, TextParseError, TextInput, TextOffset } from './base';
+import { TextParser } from './base';
+import { TextContext, TextOffset } from './context';
 
 /**
  * Single-character parser error type.
  */
-export type StringParserError = TextParseError & {
+export type StringParserError = {
     expected: string
+};
+
+type ResultWithContext = {
+    result: ParseResult<string, StringParserError>,
+    context: TextContext
 };
 
 /**
@@ -34,31 +40,31 @@ export class StringParser extends TextParser<string, StringParserError>
         this._pattern = pattern;
     }
 
-    run(input: TextInput): ParseResult<TextInput, string, StringParserError>
+    runT(input: string, context: TextContext): ResultWithContext
     {
-        const parsed = this.match(input.content.substr(input.offset.index));        
+        const parsed = this.match(input.substr(context.offset.index));        
 
         if (parsed !== null)
         {
             return {
-                success: true,
-                parsed,
-                rest: {
-                    content: input.content,
-                    offset: this.applyOffset(input, parsed)
-                }
+                result: {
+                    success: true,
+                    parsed
+                },
+                context: context.withOffset(this.offset(parsed))
             };
         }
         else
         {
             const expected = this._pattern;
             return {
-                success: false,
-                error: {
-                    context: input,
-                    expected
+                result: {
+                    success: false,
+                    error: {
+                        expected
+                    },
                 },
-                rest: input
+                context
             };
         }
     }
@@ -75,16 +81,13 @@ export class StringParser extends TextParser<string, StringParserError>
         }
     }
 
-    private applyOffset(input: TextInput, match: string): TextOffset
+    private offset(match: string): TextOffset
     {
         const lines = match.split('\n');
-        
         return {
-            index: input.offset.index + match.length,
-            column: lines.length === 1
-                ? input.offset.column + match.length
-                : lines[lines.length - 1].length + 1,
-            row: input.offset.row + (lines.length - 1)
+            index: match.length,
+            column: lines[lines.length - 1].length,
+            row: lines.length
         };
     }
 }

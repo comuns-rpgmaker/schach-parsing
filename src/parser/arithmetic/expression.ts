@@ -10,7 +10,7 @@
 
 import { Parser } from '../base';
 
-import { TextParser, char, spaces } from '../text';
+import { TextParser, char, spaces, StringParserError } from '../text';
 
 import { Expression } from './model';
 import { operation } from './operators';
@@ -21,9 +21,9 @@ import { numberExpression } from './numbers';
  *          operations/values.
  */
 export const expression = Parser.of(
-    (): TextParser<Expression> =>
+    (): TextParser<Expression, StringParserError> =>
     {
-        const parensExpr = Parser.of((): TextParser<Expression> =>
+        const parensExpr = Parser.of((): TextParser<Expression, StringParserError> =>
             char('(')
                 .dropThen(spaces())
                 .flatMap(() => expression())
