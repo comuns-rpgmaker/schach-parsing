@@ -1,4 +1,4 @@
-import { digit, text } from '../../src/parser/text';
+import { digit } from '../../src/parser/text';
 
 describe('Running a digit parser', () =>
 {
@@ -10,7 +10,7 @@ describe('Running a digit parser', () =>
         {
             for (let i = 0; i < 10; i++)
             {
-                const result = parser.run(text(i.toString()));
+                const result = parser.run(i.toString());
                 expect(result.success).toBeTrue()
             }
         });
@@ -19,35 +19,17 @@ describe('Running a digit parser', () =>
         {
             for (let i = 0; i < 10; i++)
             {
-                const result = parser.run(text(i.toString()));
+                const result = parser.run(i.toString());
                 expect(result.success && result.parsed).toBe(i);
-            }
-        });
-
-        it('changes the offsets on the rest', () =>
-        {
-            for (let i = 0; i < 10; i++)
-            {
-                const result = parser.run(text(i.toString()));
-                expect(result.rest.offset).toEqual({
-                    index: 1,
-                    column: 2,
-                    row: 1
-                });
             }
         });
     });
 
     describe('on a non-digit', () =>
     {
-        const result = parser.run(text('abcde'));
+        const result = parser.run('abcde');
 
         it('returns failure', () => expect(result.success).toBeFalse());
-
-        it('does not change the offsets on the rest', () =>
-        {
-            expect(result.rest).toEqual(text('abcde'));
-        });
 
         it('returns the expected and actual characters', () =>
         {

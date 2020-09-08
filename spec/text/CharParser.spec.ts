@@ -1,4 +1,5 @@
 import { char } from '../../src/parser/text';
+import { TextContext } from '../../src/parser/text/context';
 
 describe('Running a char parser', () =>
 {
@@ -14,12 +15,18 @@ describe('Running a char parser', () =>
             expect(result.success && result.parsed).toBe(97);
         });
 
-        it('changes the offsets on the rest', () =>
+        describe('with a context', () =>
         {
-            expect(result.context.offset).toEqual({
-                index: 1,
-                column: 2,
-                row: 1
+            const context = new TextContext();
+            
+            it('changes the offset by one column', () =>
+            {
+                const { context: resultContext } = parser.runT('abcd', context);
+                expect(resultContext.offset).toEqual({
+                    index: 1,
+                    column: 2,
+                    row: 1
+                });
             });
         });
     });
@@ -31,11 +38,6 @@ describe('Running a char parser', () =>
 
         it('returns failure', () => expect(result.success).toBeFalse());
 
-        it('does not change the offsets on the rest', () =>
-        {
-            expect(result.rest).toEqual('bcde');
-        });
-
         it('returns the expected and actual characters', () =>
         {
             expect(result.success === false
@@ -44,21 +46,20 @@ describe('Running a char parser', () =>
             expect(result.success === false
                 && result.error.actual).toEqual('b');
         });
-    });
 
-    describe('when the char is a line break', () =>
-    {
-        const parser = char('\n');
-        const result = parser.run('\nabc');
-
-        it('increments the row offset on the rest', () =>
+        describe('with a context', () =>
         {
-            expect(result.context.offset.row).toEqual(2);
-        });
-
-        it('resets the column offset on the rest', () =>
-        {
-            expect(result.context.offset.column).toEqual(1);
+            const context = new TextContext();
+            
+            it('does not change the offset', () =>
+            {
+                const { context: resultContext } = parser.runT('bcde', context);
+                expect(resultContext.offset).toEqual({
+                    index: 0,
+                    column: 1,
+                    row: 1
+                });
+            });
         });
     });
 });

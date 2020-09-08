@@ -8,7 +8,7 @@
  * Base definitions for text parsers.   
  */
 
-import { Parser, pure } from "../base";
+import { Parser } from "../base";
 import { TextContext } from "./context";
 
 /**

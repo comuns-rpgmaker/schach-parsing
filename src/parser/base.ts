@@ -56,7 +56,8 @@ export abstract class Parser<T, S, E, C>
      */
     run(input: T): ParseResult<S, E>
     {
-        return this.runT(input, this._contextProvider()).result;
+        const { result } = this.runT(input, this._contextProvider());
+        return result;
     }
 
     /**
@@ -425,7 +426,7 @@ class PureParser<T, S, C> extends Parser<T, S, never, C>
      */
     constructor(value: S)
     {
-        super(() => { throw undefined; });
+        super(() => { throw 'pure parser must not be run directly'; });
         this._value = value;
     }
 

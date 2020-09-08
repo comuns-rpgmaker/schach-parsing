@@ -9,6 +9,7 @@
  */
 
 export * from './base';
+export * from './context';
 export * from './char';
 export * from './string';
 export * from './util'
