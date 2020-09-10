@@ -50,7 +50,7 @@ export class TextContext
         return new TextContext({
             index: this._offset.index + index,
             row: this._offset.row + row,
-            column: row > 0 ? column : this._offset.column + column
+            column: row > 0 ? 1 + column : this._offset.column + column
         });
     }
 }

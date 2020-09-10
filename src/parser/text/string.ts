@@ -87,7 +87,7 @@ export class StringParser extends TextParser<string, StringParserError>
         return {
             index: match.length,
             column: lines[lines.length - 1].length,
-            row: lines.length
+            row: lines.length - 1
         };
     }
 }

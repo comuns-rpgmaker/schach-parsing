@@ -1,4 +1,5 @@
 import { digit } from '../../src/parser/text';
+import { TextContext } from '../../src/parser/text/context';
 
 describe('Running a digit parser', () =>
 {
@@ -23,6 +24,21 @@ describe('Running a digit parser', () =>
                 expect(result.success && result.parsed).toBe(i);
             }
         });
+
+        describe('with a context', () =>
+        {
+            const context = new TextContext();
+            
+            it('changes the offset by one column', () =>
+            {
+                const { context: resultContext } = parser.runT('1', context);
+                expect(resultContext.offset).toEqual({
+                    index: 1,
+                    column: 2,
+                    row: 1
+                });
+            });
+        });
     });
 
     describe('on a non-digit', () =>
@@ -38,6 +54,21 @@ describe('Running a digit parser', () =>
             
             expect(result.success === false
                 && result.error.actual).toEqual('a');
+        });
+        
+        describe('with a context', () =>
+        {
+            const context = new TextContext();
+            
+            it('does not change the offset', () =>
+            {
+                const { context: resultContext } = parser.runT('a', context);
+                expect(resultContext.offset).toEqual({
+                    index: 0,
+                    column: 1,
+                    row: 1
+                });
+            });
         });
     });
 });
