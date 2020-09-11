@@ -85,7 +85,7 @@
 					<div class="tsd-signature tsd-kind-icon">expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;Expression, StringParserError&gt; &#x3D;&gt;{const parensExpr &#x3D; Parser.of((): TextParser&lt;Expression, StringParserError&gt; &#x3D;&gt;char(&#x27;(&#x27;).dropThen(spaces()).flatMap(() &#x3D;&gt; expression()).thenDrop(spaces()).thenDrop(char(&#x27;)&#x27;)));const valueExpr &#x3D; parensExpr().or(numberExpression());return operation(valueExpr).or(valueExpr);})</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/f952f5e/src/parser/arithmetic/expression.ts#L23">parser/arithmetic/expression.ts:23</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/87e9257/src/parser/arithmetic/expression.ts#L23">parser/arithmetic/expression.ts:23</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
