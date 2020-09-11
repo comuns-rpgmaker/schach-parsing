@@ -32,5 +32,5 @@ export const expression = Parser.of(
 
         const valueExpr = parensExpr().or(numberExpression());
         
-        return operation(valueExpr)().or(valueExpr);
+        return operation(valueExpr).or(valueExpr);
     });

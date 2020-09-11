@@ -54,17 +54,17 @@ const balanceOperators =
  * @param valueExpr - parser to be used for the operands.
  * @returns a parser for an operation or a sequence of operations.
  */
-export const operation = (valueExpr: TextParser<Expression, CharParserError>):
-    () => TextParser<OperatorExpression, StringParserError> =>
+export const operation = (valueExpr: TextParser<Expression, CharParserError>): TextParser<OperatorExpression, StringParserError> => 
     {
         const self = Parser.of((): TextParser<OperatorExpression, StringParserError> =>
             valueExpr
             .thenDrop(spaces())
-            .flatMap(left => operator.map(op => ({ ...op, left })))
+            .zip(operator)
+            .map(([left, op]) => ({ ...op, left }))
             .thenDrop(spaces())
             .flatMap(op =>
                 self().map(balanceOperators(op))
                 .or(valueExpr.map(right => ({ ...op, right })))));
 
-        return self;
+        return self();
     }

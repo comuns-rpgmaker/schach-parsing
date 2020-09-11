@@ -31,11 +31,13 @@ const sign =
 const floatingPoint = 
     char('.')
     .dropThen(many1(digit()))
-    .map(digits => digits.reduceRight((acc, n) => n + acc / 10) / 10);
+    .map(digits => digits.reduceRight((acc, n) => n + acc / 10) / 10)
+    .or(pure(0));
 
 const exponent =
     char('e')
-    .dropThen(sign.flatMap(bit => integer().map(n => bit * n)))
+    .dropThen(sign.zip(integer()))
+    .map(([signBit, n])=> signBit * n)
     .map(e => Math.pow(10, e))
     .or(pure(1));
 
@@ -45,10 +47,8 @@ const exponent =
  */
 export const number = Parser.of((): TextParser<number, CharParserError> =>
     sign.flatMap(bit =>
-        integer()
-        .flatMap(n => floatingPoint
-            .map(f => bit * (n + f))
-            .or(pure(n)))
+        integer().zip(floatingPoint)
+        .map(([n, f]) => bit * (n + f))
         .or(floatingPoint)
         .flatMap(n => exponent.map(e => n * e))));
 
