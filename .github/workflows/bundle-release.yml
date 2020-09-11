@@ -20,6 +20,7 @@ jobs:
       - name: Build
         run: |
           npm ci
+          mkdir -p dist
           npm run build
       - name: Upload Release Bundle
         uses: actions/upload-release-asset@v1
