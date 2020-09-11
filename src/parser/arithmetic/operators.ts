@@ -10,9 +10,9 @@
 
 import { Parser } from '../base';
 import { oneOf } from '../combinators';
-import { string, spaces } from '../text';
+import { string, spaces, TextParser, StringParserError, CharParserError } from '../text';
 
-import { Operator, OperatorExpression, Expression } from './types';
+import { Operator, OperatorExpression, Expression } from './model';
 
 const build = (
     priority: number,
@@ -38,11 +38,9 @@ const before = (left: Operator, right: Operator): boolean =>
 type LeftOperatorExpression = Omit<OperatorExpression, "right">;
 type OperatorOnlyExpression = Omit<LeftOperatorExpression, "left">;
 
-const operator =
+const operator: TextParser<OperatorOnlyExpression, StringParserError> =
     oneOf(...Object.keys(OPERATORS).map(string))
     .map(op => OPERATORS[op])
-    .error((_, context) =>
-        `expected operator (${Object.keys(OPERATORS).join(', ')}), got '${context}'`)
     .map(f => ({ type: 'operator', operator: f }) as OperatorOnlyExpression);
 
 const balanceOperators =
@@ -56,12 +54,17 @@ const balanceOperators =
  * @param valueExpr - parser to be used for the operands.
  * @returns a parser for an operation or a sequence of operations.
  */
-export const operation =
-    (valueExpr: Parser<string, Expression>): Parser<string, OperatorExpression> =>
-        valueExpr
-        .thenDrop(spaces)
-        .flatMap(left => operator.map(op => ({ ...op, left })))
-        .thenDrop(spaces)
-        .flatMap(op =>
-            operation(valueExpr).map(balanceOperators(op))
-            .or(valueExpr.map(right => ({ ...op, right }))));
+export const operation = (valueExpr: TextParser<Expression, CharParserError>): TextParser<OperatorExpression, StringParserError> => 
+    {
+        const self = Parser.of((): TextParser<OperatorExpression, StringParserError> =>
+            valueExpr
+            .thenDrop(spaces())
+            .zip(operator)
+            .map(([left, op]) => ({ ...op, left }))
+            .thenDrop(spaces())
+            .flatMap(op =>
+                self().map(balanceOperators(op))
+                .or(valueExpr.map(right => ({ ...op, right })))));
+
+        return self();
+    }

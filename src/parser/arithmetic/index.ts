@@ -1,4 +1,4 @@
-export * from './types';
+export * from './model';
 export * from './numbers';
 export * from './operators';
 export * from './expression';
