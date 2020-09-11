@@ -69,36 +69,48 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Functions</h3>
+							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_parser_arithmetic_expression_.html#expression" class="tsd-kind-icon">expression</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_expression_.html#expression" class="tsd-kind-icon">expression</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="expression" class="tsd-anchor"></a>
-					<h3>expression</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">expression<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_parser_arithmetic_types_.html#expression" class="tsd-signature-type">Expression</a><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/c1b73ad/src/parser/arithmetic/expression.ts#L30">parser/arithmetic/expression.ts:30</a></li>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> expression</h3>
+					<div class="tsd-signature tsd-kind-icon">expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;Expression, StringParserError&gt; &#x3D;&gt;{const parensExpr &#x3D; Parser.of((): TextParser&lt;Expression, StringParserError&gt; &#x3D;&gt;char(&#x27;(&#x27;).dropThen(spaces()).flatMap(() &#x3D;&gt; expression()).thenDrop(spaces()).thenDrop(char(&#x27;)&#x27;)));const valueExpr &#x3D; parensExpr().or(numberExpression());return operation(valueExpr).or(valueExpr);})</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/98d30c2/src/parser/arithmetic/expression.ts#L23">parser/arithmetic/expression.ts:23</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser that parses an arithmetic expression into a tree of
+								operations/values.</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
 								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-							</div>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="_parser_arithmetic_types_.html#expression" class="tsd-signature-type">Expression</a><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>a parser that parses an arithmetic expression into a tree of
-							operations/values.</p>
-						</li>
-					</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -121,13 +133,13 @@
 						<a href="_parser_arithmetic_index_.html">&quot;parser/arithmetic/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_model_.html">&quot;parser/arithmetic/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_numbers_.html">&quot;parser/arithmetic/numbers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_operators_.html">&quot;parser/arithmetic/operators&quot;</a>
-					</li>
-					<li class=" tsd-kind-module">
-						<a href="_parser_arithmetic_types_.html">&quot;parser/arithmetic/types&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_base_.html">&quot;parser/base&quot;</a>
@@ -142,13 +154,28 @@
 						<a href="_parser_result_.html">&quot;parser/result&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
-						<a href="_parser_text_.html">&quot;parser/text&quot;</a>
+						<a href="_parser_text_base_.html">&quot;parser/text/base&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_text_char_.html">&quot;parser/text/char&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_text_context_.html">&quot;parser/text/context&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_text_index_.html">&quot;parser/text/index&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_text_string_.html">&quot;parser/text/string&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_text_util_.html">&quot;parser/text/util&quot;</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module">
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="_parser_arithmetic_expression_.html#expression" class="tsd-kind-icon">expression</a>
 					</li>
 				</ul>
@@ -161,12 +188,14 @@
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
 			<ul class="tsd-legend">
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
 				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
 				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
 				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
 				<li class="tsd-kind-type-alias tsd-has-type-parameter"><span class="tsd-kind-icon">Type alias with type parameter</span></li>
 			</ul>
 			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
 				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
 			</ul>
 		</div>
