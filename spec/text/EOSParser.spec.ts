@@ -1,5 +1,5 @@
-import { eos } from '../../src/parser/text/util';
-import { TextContext } from '../../src/parser/text/context';
+import { eos } from 'parser/text/util';
+import { TextContext } from 'parser/text/context';
 
 describe('Running an EOS parser', () =>
 {

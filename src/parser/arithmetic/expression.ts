@@ -8,9 +8,8 @@
  * Core defintion of the arithmetic expression parser.
  */
 
-import { Parser } from '../base';
-
-import { TextParser, char, spaces, StringParserError } from '../text';
+import { Parser } from 'parser/base';
+import { TextParser, char, spaces, StringParserError } from 'parser/text';
 
 import { Expression } from './model';
 import { operation } from './operators';

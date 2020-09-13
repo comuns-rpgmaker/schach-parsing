@@ -8,9 +8,16 @@
  * Parsers and definitions for arithmetic operators and operations.
  */
 
-import { Parser } from '../base';
-import { oneOf } from '../combinators';
-import { string, spaces, TextParser, StringParserError, CharParserError } from '../text';
+import { Parser } from 'parser/base';
+import { oneOf } from 'parser/combinators';
+
+import {
+    string,
+    spaces,
+    TextParser,
+    StringParserError,
+    CharParserError
+} from 'parser/text';
 
 import { Operator, OperatorExpression, Expression } from './model';
 

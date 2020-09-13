@@ -7,7 +7,7 @@
   "scripts": {
     "prebuild": "mz-mtdt -i ./plugin-metadata.yaml -o dist/annotations.js",
     "build": "rollup -c",
-    "test": "ts-node node_modules/jasmine/bin/jasmine",
+    "test": "ts-node -r tsconfig-paths/register node_modules/jasmine/bin/jasmine",
     "coverage": "nyc -r lcov -e .ts -x \"spec/*\" npm run test"
   },
   "keywords": [
@@ -30,6 +30,7 @@
     "rollup-plugin-istanbul": "^2.0.1",
     "rollup-plugin-terser": "^7.0.0",
     "ts-node": "^9.0.0",
+    "tsconfig-paths": "^3.9.0",
     "tslib": "^2.0.1",
     "typescript": "^4.0.2"
   },

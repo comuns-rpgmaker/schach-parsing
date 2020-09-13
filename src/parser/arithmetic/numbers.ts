@@ -8,8 +8,8 @@
  * Definitions for numeric parsers.
  */
 
-import { Parser, pure } from '../base';
-import { many1 } from '../combinators';
+import { Parser, pure } from 'parser/base';
+import { many1 } from 'parser/combinators';
 
 import { char, digit, spaces, TextParser, CharParserError } from '../text';
 

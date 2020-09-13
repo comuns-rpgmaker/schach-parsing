@@ -1,5 +1,5 @@
-import { char } from '../../src/parser/text';
-import { TextContext } from '../../src/parser/text/context';
+import { char } from 'parser/text';
+import { TextContext } from 'parser/text/context';
 
 describe('Running a char parser', () =>
 {

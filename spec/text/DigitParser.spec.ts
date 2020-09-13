@@ -1,5 +1,5 @@
-import { digit } from '../../src/parser/text';
-import { TextContext } from '../../src/parser/text/context';
+import { digit } from 'parser/text';
+import { TextContext } from 'parser/text/context';
 
 describe('Running a digit parser', () =>
 {

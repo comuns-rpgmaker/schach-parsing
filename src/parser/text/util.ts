@@ -8,7 +8,7 @@
  * Utilitary text parsers.   
  */
 
-import { Parser, pure } from '../base';
+import { Parser, pure } from 'parser/base';
 
 import { char, CharParserError } from './char'; 
 import { TextParser, TextParsing } from './base';
