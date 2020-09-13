@@ -40,6 +40,7 @@ type OperatorOnlyExpression = Omit<LeftOperatorExpression, "left">;
 
 const operator: TextParser<OperatorOnlyExpression, StringParserError> =
     oneOf(...Object.keys(OPERATORS).map(string))
+    .mapError(() => ({ expected: `one of ${Object.keys(OPERATORS).join(', ')}` }))
     .map(op => OPERATORS[op])
     .map(f => ({ type: 'operator', operator: f }) as OperatorOnlyExpression);
 
@@ -54,17 +55,18 @@ const balanceOperators =
  * @param valueExpr - parser to be used for the operands.
  * @returns a parser for an operation or a sequence of operations.
  */
-export const operation = (valueExpr: TextParser<Expression, CharParserError>): TextParser<OperatorExpression, StringParserError> => 
+export const operation = (valueExpr: TextParser<Expression, CharParserError>):
+    TextParser<OperatorExpression, StringParserError> => 
     {
-        const self = Parser.of((): TextParser<OperatorExpression, StringParserError> =>
-            valueExpr
-            .thenDrop(spaces())
-            .zip(operator)
-            .map(([left, op]) => ({ ...op, left }))
-            .thenDrop(spaces())
-            .flatMap(op =>
-                self().map(balanceOperators(op))
-                .or(valueExpr.map(right => ({ ...op, right })))));
+        const self = Parser.of(():
+            TextParser<OperatorExpression, StringParserError> =>
+                valueExpr.thenDrop(spaces())
+                .zip(operator)
+                .map(([left, op]) => ({ ...op, left }))
+                .thenDrop(spaces())
+                .flatMap(op =>
+                    self().map(balanceOperators(op))
+                    .or(valueExpr.map(right => ({ ...op, right })))));
 
         return self();
     }

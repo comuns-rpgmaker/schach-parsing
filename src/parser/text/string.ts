@@ -8,7 +8,6 @@
  * Definitions for a parser that matches a string.   
  */
 
-import { ParseResult } from '../result';
 import { TextParser, TextParsing } from './base';
 import { TextContext, TextOffset } from './context';
 
@@ -17,11 +16,6 @@ import { TextContext, TextOffset } from './context';
  */
 export type StringParserError = {
     expected: string
-};
-
-type ResultWithContext = {
-    result: ParseResult<string, StringParserError>,
-    context: TextContext
 };
 
 /**

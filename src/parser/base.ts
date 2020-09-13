@@ -135,7 +135,7 @@ export abstract class Parser<T, S, E, C>
      * 
      * @param f - function mapping from an error to another.
      */
-    mapError<F>(f: (error?: E) => F): Parser<T, S, F, C>
+    mapError<F>(f: (error: E) => F): Parser<T, S, F, C>
     {
         return new ParserMapError(this, f);
     }

@@ -64,6 +64,41 @@ class DigitParser extends TextParser<number, CharParserError>
 }
 
 /**
+ * Specialized parser that matches the end of the string.
+ */
+class EOSParser extends TextParser<undefined, CharParserError>
+{
+    runT(input: string, context: TextContext): TextParsing<undefined, CharParserError>
+    {
+        if (context.offset.index >= input.length)
+        {
+            return {
+                rest: input,
+                context: context,
+                result: {
+                    success: true,
+                    parsed: undefined
+                }
+            };
+        }
+        else
+        {
+            return {
+                rest: input,
+                context,
+                result: {
+                    success: false,
+                    error: {
+                        expected: 'end of string',
+                        actual: input[context.offset.index]
+                    }
+                }
+            };
+        }
+    }
+}
+
+/**
  * @returns a parser for a single arabic digit (0-9).
  */
 export const digit = Parser.of(() => new DigitParser());
@@ -75,3 +110,8 @@ export const spaces = Parser.of((): TextParser<string, never> =>
     char(' ')
         .flatMap(s => spaces().map(t => s + t))
         .or(pure('')));
+
+/**
+ * @returns a parser that matches the end of the string.
+ */
+export const eof = Parser.of(() => new EOSParser());
