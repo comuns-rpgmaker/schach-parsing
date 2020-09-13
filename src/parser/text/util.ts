@@ -114,4 +114,4 @@ export const spaces = Parser.of((): TextParser<string, never> =>
 /**
  * @returns a parser that matches the end of the string.
  */
-export const eof = Parser.of(() => new EOSParser());
+export const eos = Parser.of(() => new EOSParser());
