@@ -9,16 +9,10 @@
  */
 
 import { Parser, pure } from '../base';
-import { ParseResult } from '../result';
 
 import { char, CharParserError } from './char'; 
-import { TextParser } from './base';
+import { TextParser, TextParsing } from './base';
 import { TextContext } from './context';
-
-type ResultWithContext = {
-    result: ParseResult<number, CharParserError>,
-    context: TextContext
-};
 
 const CP_ZERO = 48;
 const CP_NINE = 57;
@@ -28,18 +22,19 @@ const CP_NINE = 57;
  */
 class DigitParser extends TextParser<number, CharParserError>
 {
-    runT(input: string, context: TextContext): ResultWithContext
+    runT(input: string, context: TextContext): TextParsing<number, CharParserError>
     {
         const codePoint = input.codePointAt(context.offset.index);
 
         if (codePoint && CP_ZERO <= codePoint && codePoint <= CP_NINE)
         {
             return {
+                rest: input,
+                context: context.withOffset({ index: 1, column: 1 }),
                 result: {
                     success: true,
                     parsed: this.codePointToInt(codePoint),
-                },
-                context: context.withOffset({ index: 1, column: 1 })
+                }
             };
         }
         else
@@ -49,14 +44,15 @@ class DigitParser extends TextParser<number, CharParserError>
                             : String.fromCodePoint(codePoint);
 
             return {
+                rest: input,
+                context,
                 result: {
                     success: false,
                     error: {
                         expected: '0-9',
                         actual
                     }
-                },
-                context
+                }
             };
         }
     }

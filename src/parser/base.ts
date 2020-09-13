@@ -1,5 +1,5 @@
 /**
- * @file result.ts
+ * @file base.ts
  * 
  * @author Brandt
  * @date 2020/08/27
@@ -8,7 +8,21 @@
  * Core definition of the Parser class.
  */
 
-import type { ParseResult } from './result';
+import type { ParseFailure, ParseResult, ParseSuccess } from './result';
+
+/**
+ * Parsing data type.
+ * 
+ * @template T - type to parse from.
+ * @template S - parsing result type.
+ * @template E - error type.
+ * @template C - context passing type.
+ */
+export type Parsing<T, S, E, C> = {
+    rest: T,
+    context: C,
+    result: ParseResult<S, E>
+};
 
 /**
  * Basic parser class.
@@ -44,20 +58,19 @@ export abstract class Parser<T, S, E, C>
      * @param input - value to be parsed.
      * @param context - parsing context.
      */
-    abstract runT(input: T, context: C): {
-        result: ParseResult<S, E>, 
-        context: C
-    };
+    abstract runT(input: T, context: C): Parsing<T, S, E, C>;
 
     /**
      * Run the parser on an input.
      * 
      * @param input - value to be parsed.
      */
-    run(input: T): ParseResult<S, E>
+    run(input: T): ParseSuccess<S> | (ParseFailure<E> & { context: C })
     {
-        const { result } = this.runT(input, this._contextProvider());
-        return result;
+        const { result, context } = this.runT(input, this._contextProvider());
+        
+        if (result.success) return result;
+        else return { ...result, context };
     }
 
     /**
@@ -120,10 +133,9 @@ export abstract class Parser<T, S, E, C>
     /**
      * Returns a parser with a mapped error message.
      * 
-     * @param f - function mapping from a partial parsed value to an error
-     *            message.
+     * @param f - function mapping from an error to another.
      */
-    error<F>(f: (error?: E) => F): Parser<T, S, F, C>
+    mapError<F>(f: (error?: E) => F): Parser<T, S, F, C>
     {
         return new ParserMapError(this, f);
     }
@@ -204,20 +216,21 @@ class ParserFlatMap<T, S, U, E, F, C> extends Parser<T, U, E | F, C>
         this._functor = functor;    
     }
 
-    runT(input: T, context: C): { result: ParseResult<U, E | F>, context: C }
+    runT(input: T, context: C): Parsing<T, U, E | F, C>
     {
         const {
+            rest,
             result,
             context: resultContext
         } = this._parser.runT(input, context);
 
         if (result.success)
         {
-            return this._functor(result.parsed).runT(input, resultContext);
+            return this._functor(result.parsed).runT(rest, resultContext);
         }
         else
         {
-            return { result, context };
+            return { rest: input, context, result };
         }
     }
 }
@@ -248,9 +261,10 @@ class ParserMap<T, S, U, E, C> extends Parser<T, U, E, C>
         this._functor = functor;
     }
 
-    runT(input: T, context: C): { result: ParseResult<U, E>, context: C }
+    runT(input: T, context: C): Parsing<T, U, E, C>
     {
         const {
+            rest,
             result,
             context: resultContext
         } = this._parser.runT(input, context);
@@ -258,6 +272,7 @@ class ParserMap<T, S, U, E, C> extends Parser<T, U, E, C>
         if (result.success)
         {
             return {
+                rest,
                 result: {
                     ...result,
                     parsed: this._functor(result.parsed)
@@ -267,7 +282,7 @@ class ParserMap<T, S, U, E, C> extends Parser<T, U, E, C>
         }
         else
         {
-            return { result, context };
+            return { rest: input, result, context };
         }
     }
 }
@@ -284,30 +299,32 @@ class ParserMap<T, S, U, E, C> extends Parser<T, U, E, C>
 class ParserMapContext<T, S, E, C> extends Parser<T, S, E, C>
 {
     private readonly _parser: Parser<T, S, E, C>;
-    private readonly _functor: (value: C) => C;
+    private readonly _map: (value: C) => C;
 
     /**
      * @param parser - original parser.
-     * @param functor - mapping from the originalto context type to the desired
+     * @param map - mapping from the originalto context type to the desired
      *                  type.
      */
-    constructor(parser: Parser<T, S, E, C>, functor: (context: C) => C)
+    constructor(parser: Parser<T, S, E, C>, map: (context: C) => C)
     {
-        super(() => functor(parser.contextProvider()));
+        super(() => map(parser.contextProvider()));
         this._parser = parser;
-        this._functor = functor;
+        this._map = map;
     }
 
-    runT(input: T, context: C): { result: ParseResult<S, E>, context: C }
+    runT(input: T, context: C): Parsing<T, S, E, C>
     {
         const {
+            rest,
             result,
             context: resultContext
         } = this._parser.runT(input, context);
 
         return {
+            rest,
             result,
-            context: this._functor(resultContext)
+            context: this._map(resultContext)
         };
     }
 }
@@ -338,9 +355,10 @@ class ParserDisjunction<T, S, U, E, C> extends Parser<T, S | U, E, C>
         this._fallback = fallback;
     }
 
-    runT(input: T, context: C): { result: ParseResult<S | U, E>, context: C }
+    runT(input: T, context: C): Parsing<T, S | U, E, C>
     {
         const {
+            rest,
             result,
             context: resultContext
         } = this._parser.runT(input, context);
@@ -348,6 +366,7 @@ class ParserDisjunction<T, S, U, E, C> extends Parser<T, S | U, E, C>
         if (result.success)
         {
             return {
+                rest,
                 result,
                 context: resultContext
             };
@@ -370,7 +389,7 @@ class ParserDisjunction<T, S, U, E, C> extends Parser<T, S | U, E, C>
 class ParserMapError<T, S, E, F, C> extends Parser<T, S, F, C>
 {
     private readonly _parser: Parser<T, S, E, C>;
-    private readonly _mapper: (context?: E) => F;
+    private readonly _functor: (error?: E) => F;
 
     /**
      * @param parser - original parser.
@@ -379,31 +398,33 @@ class ParserMapError<T, S, E, F, C> extends Parser<T, S, F, C>
      */
     constructor(
         parser: Parser<T, S, E, C>,
-        mapper: (context?: E) => F
+        functor: (error?: E) => F
     )
     {
         super(parser.contextProvider);
         this._parser = parser;
-        this._mapper = mapper;
+        this._functor = functor;
     }
 
-    runT(input: T, context: C): { result: ParseResult<S, F>, context: C }
+    runT(input: T, context: C): Parsing<T, S, F, C>
     {
         const {
+            rest,
             result,
             context: resultContext
         } = this._parser.runT(input, context);
 
         if (result.success)
         {
-            return { result, context: resultContext };
+            return { rest, result, context: resultContext };
         }
         else
         {
             return {
+                rest: input,
                 result: {
                     ...result,
-                    error: this._mapper(result.error)
+                    error: this._functor(result.error)
                 },
                 context
             };
@@ -426,13 +447,18 @@ class PureParser<T, S, C> extends Parser<T, S, never, C>
      */
     constructor(value: S)
     {
-        super(() => { throw 'pure parser must not be run directly'; });
+        super(() =>
+        {
+            throw 'pure parser must not be run directly and without a context';
+        });
+
         this._value = value;
     }
 
-    runT(input: T, context: C): { result: ParseResult<S, never>, context: C }
+    runT(input: T, context: C): Parsing<T, S, never, C>
     {
         return {
+            rest: input,
             result: {
                 success: true,
                 parsed: this._value,

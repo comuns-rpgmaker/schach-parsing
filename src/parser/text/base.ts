@@ -8,8 +8,17 @@
  * Base definitions for text parsers.   
  */
 
-import { Parser } from "../base";
+import { Parsing, Parser } from "../base";
+
 import { TextContext } from "./context";
+
+/**
+ * Text parsing data type.
+ * 
+ * @template T - parsing result type.
+ * @template E - error type.
+ */
+export type TextParsing<T, E> = Parsing<string, T, E, TextContext>;
 
 /**
  * Text parser base class.
@@ -21,4 +30,6 @@ export abstract class TextParser<T, E>
     {
         super(() => new TextContext);
     }
+
+    abstract runT(input: string, context: TextContext): TextParsing<T, E>;
 }

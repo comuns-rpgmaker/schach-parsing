@@ -9,7 +9,7 @@
  */
 
 import { ParseResult } from '../result';
-import { TextParser } from './base';
+import { TextParser, TextParsing } from './base';
 import { TextContext, TextOffset } from './context';
 
 /**
@@ -40,31 +40,33 @@ export class StringParser extends TextParser<string, StringParserError>
         this._pattern = pattern;
     }
 
-    runT(input: string, context: TextContext): ResultWithContext
+    runT(input: string, context: TextContext): TextParsing<string, StringParserError>
     {
         const parsed = this.match(input.substr(context.offset.index));        
 
         if (parsed !== null)
         {
             return {
+                rest: input,
+                context: context.withOffset(this.offset(parsed)),
                 result: {
                     success: true,
                     parsed
-                },
-                context: context.withOffset(this.offset(parsed))
+                }
             };
         }
         else
         {
             const expected = this._pattern;
             return {
+                rest: input,
+                context,
                 result: {
                     success: false,
                     error: {
                         expected
                     },
-                },
-                context
+                }
             };
         }
     }

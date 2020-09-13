@@ -8,8 +8,8 @@
  * Definitions for a single-character parser.   
  */
 
-import { ParseResult } from '../result';
-import { TextParser } from './base';
+import { TextParser, TextParsing } from './base';
+
 import { TextContext, TextOffset } from './context';
 
 /**
@@ -18,11 +18,6 @@ import { TextContext, TextOffset } from './context';
 export type CharParserError = {
     expected: string,
     actual: string
-};
-
-type ResultWithContext = {
-    result: ParseResult<number, CharParserError>,
-    context: TextContext
 };
 
 /**
@@ -41,18 +36,19 @@ export class CharParser extends TextParser<number, CharParserError>
         this._codePoint = codePoint;
     }
 
-    runT(input: string, context: TextContext): ResultWithContext
+    runT(input: string, context: TextContext): TextParsing<number, CharParserError>
     {
         const inputCodePoint = input.codePointAt(context.offset.index);
 
         if (inputCodePoint === this._codePoint)
         {
             return {
+                rest: input,
+                context: context.withOffset(this.offset()),
                 result: {
                     success: true,
                     parsed: this._codePoint,
-                },
-                context: context.withOffset(this.offset)
+                }
             };
         }
         else
@@ -62,16 +58,17 @@ export class CharParser extends TextParser<number, CharParserError>
                             ? '<eos>'
                             : String.fromCodePoint(inputCodePoint);
             return {
+                rest: input,
+                context,
                 result: {
                     success: false,
                     error: { expected, actual }
-                },
-                context
+                }
             };
         }
     }
 
-    get offset(): TextOffset
+    private offset(): TextOffset
     {
         const newLine = this._codePoint === 10;
         
