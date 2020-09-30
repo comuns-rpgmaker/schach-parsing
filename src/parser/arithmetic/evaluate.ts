@@ -8,7 +8,7 @@
  * Evaluation function definition.
  */
 
-import { Expression } from './model';
+import { Expression } from 'parser/arithmetic';
 
 import { $gameVariables } from 'rmmz';
 
@@ -23,7 +23,7 @@ export function evaluate(expr: Expression): number
     {
         return expr.value;
     }
-    else if (expr.type === 'variable')
+    else if (expr.type === 'game_variable')
     {
         return $gameVariables.value(evaluate(expr.id));
     }

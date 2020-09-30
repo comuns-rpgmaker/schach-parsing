@@ -11,9 +11,9 @@
 import { Parser, pure } from 'parser/base';
 import { many1 } from 'parser/combinators';
 
-import { char, digit, spaces, TextParser, CharParserError } from '../text';
+import { char, digit, spaces, TextParser, CharParserError } from 'parser/text';
 
-import type { NumberExpression } from './model';
+import type { NumberExpression } from 'parser/arithmetic';
 
 /**
  * @returns a parser that accepts a (possibly signed) string of digits and

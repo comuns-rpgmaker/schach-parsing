@@ -11,10 +11,12 @@
 import { Parser } from 'parser/base';
 import { TextParser, char, spaces, StringParserError } from 'parser/text';
 
-import { Expression } from './model';
-import { operation } from './operators';
-import { numberExpression } from './numbers';
-import { variableExpression } from './variables';
+import {
+    Expression,
+    operation,
+    numberExpression,
+    variableExpression
+} from 'parser/arithmetic';
 
 /**
  * @returns a parser that parses an arithmetic expression into a tree of

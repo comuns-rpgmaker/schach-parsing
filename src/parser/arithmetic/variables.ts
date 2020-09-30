@@ -10,20 +10,19 @@
 
 import { Parser } from 'parser/base';
 import { char, StringParserError, TextParser } from 'parser/text';
-import { expression } from './expression';
-import { VariableExpression } from './model';
+import { expression, GameVariableExpression } from 'parser/arithmetic';
 
 /**
  * @returns a parser that accepts a variable expression in the format
  *          `v[<expression>]` and returns a VariableExpression object.
  */
 export const variableExpression = Parser.of(
-    (): TextParser<VariableExpression, StringParserError> => 
+    (): TextParser<GameVariableExpression, StringParserError> => 
         char('v')
         .dropThen(char('['))
         .flatMap(() =>
-            expression().map<VariableExpression>(expr => ({
-                type: 'variable',
+            expression().map<GameVariableExpression>(expr => ({
+                type: 'game_variable',
                 id: expr
             })))
         .thenDrop(char(']')));

@@ -25,15 +25,15 @@ export type NumberExpression = {
 /**
  * Type for a variable expression.
  */
-export type VariableExpression = {
-    type: 'variable',
+export type GameVariableExpression = {
+    type: 'game_variable',
     id: Expression
 };
 
 /**
  * Generic type for value expressions.
  */
-type ValueExpression = NumberExpression | VariableExpression;
+type ValueExpression = NumberExpression | GameVariableExpression;
 
 /**
  * Type for an operator expression.
