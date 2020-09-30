@@ -14,6 +14,7 @@ import { TextParser, char, spaces, StringParserError } from 'parser/text';
 import { Expression } from './model';
 import { operation } from './operators';
 import { numberExpression } from './numbers';
+import { variableExpression } from './variables';
 
 /**
  * @returns a parser that parses an arithmetic expression into a tree of
@@ -22,14 +23,18 @@ import { numberExpression } from './numbers';
 export const expression = Parser.of(
     (): TextParser<Expression, StringParserError> =>
     {
-        const parensExpr = Parser.of((): TextParser<Expression, StringParserError> =>
-            char('(')
-                .dropThen(spaces())
-                .flatMap(() => expression())
-                .thenDrop(spaces())
-                .thenDrop(char(')')));
+        const parensExpr = Parser.of(
+            (): TextParser<Expression, StringParserError> =>
+                char('(')
+                    .dropThen(spaces())
+                    .flatMap(() => expression())
+                    .thenDrop(spaces())
+                    .thenDrop(char(')')));
 
-        const valueExpr = parensExpr().or(numberExpression());
+        const valueExpr =
+            parensExpr()
+            .or(numberExpression())
+            .or(variableExpression());
         
         return operation(valueExpr).or(valueExpr);
     });

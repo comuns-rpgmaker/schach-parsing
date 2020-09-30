@@ -15,8 +15,7 @@ import {
     string,
     spaces,
     TextParser,
-    StringParserError,
-    CharParserError
+    StringParserError
 } from 'parser/text';
 
 import { Operator, OperatorExpression, Expression } from './model';
@@ -62,7 +61,7 @@ const balanceOperators =
  * @param valueExpr - parser to be used for the operands.
  * @returns a parser for an operation or a sequence of operations.
  */
-export const operation = (valueExpr: TextParser<Expression, CharParserError>):
+export const operation = (valueExpr: TextParser<Expression, StringParserError>):
     TextParser<OperatorExpression, StringParserError> => 
     {
         const self = Parser.of(():

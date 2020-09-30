@@ -10,6 +10,8 @@
 
 import { Expression } from './model';
 
+import { $gameVariables } from 'rmmz';
+
 /**
  * Evaluates a parsed tree of operations/values.
  * 
@@ -17,6 +19,16 @@ import { Expression } from './model';
  */
 export function evaluate(expr: Expression): number
 {
-    if (expr.type === 'number') return expr.value;
-    else return expr.operator(evaluate(expr.left), evaluate(expr.right));
+    if (expr.type === 'number')
+    {
+        return expr.value;
+    }
+    else if (expr.type === 'variable')
+    {
+        return $gameVariables.value(evaluate(expr.id));
+    }
+    else
+    {
+        return expr.operator(evaluate(expr.left), evaluate(expr.right));
+    }
 }

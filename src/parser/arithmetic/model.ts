@@ -23,6 +23,19 @@ export type NumberExpression = {
 };
 
 /**
+ * Type for a variable expression.
+ */
+export type VariableExpression = {
+    type: 'variable',
+    id: Expression
+};
+
+/**
+ * Generic type for value expressions.
+ */
+type ValueExpression = NumberExpression | VariableExpression;
+
+/**
  * Type for an operator expression.
  */
 export type OperatorExpression = {
@@ -35,4 +48,4 @@ export type OperatorExpression = {
 /**
  * Type for an arithmetic expression tree.
  */
-export type Expression = NumberExpression | OperatorExpression;
+export type Expression = ValueExpression | OperatorExpression;
