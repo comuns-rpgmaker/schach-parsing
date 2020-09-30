@@ -1,13 +1,13 @@
 {
     "compilerOptions": {
+        "esModuleInterop": true,
         "target": "ES5",
         "lib": ["ES5", "ES6", "DOM"],
-        "sourceMap": true,
         "downlevelIteration": true,
         "removeComments": true,
         "strictNullChecks": true,
-        "baseUrl": "./src"
+        "baseUrl": "src"
     },
-    "include": ["**/*.ts"],
+    "include": ["src/**/*", "spec/**/*"],
     "exclude": ["node_modules"]
 }
