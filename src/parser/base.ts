@@ -109,6 +109,18 @@ export abstract class Parser<T, S, E, C>
     }
 
     /**
+     * Returns a parser that accepts the same input, but might fail depending
+     * on what was parsed.
+     * 
+     * @param f - condition to match, or else the parser will fail.
+     * @param error - error to return on failure.
+     */
+    filter(f: (value: S) => boolean, error: (value: S) => E): Parser<T, S, E, C>
+    {
+        return new ParserFilter(this, f, error);
+    }
+
+    /**
      * Returns this parser with its context mapped by a function.
      * 
      * @note the context is mapped even if the parser fails.
@@ -279,6 +291,74 @@ class ParserMap<T, S, U, E, C> extends Parser<T, U, E, C>
                 },
                 context: resultContext
             };
+        }
+        else
+        {
+            return { rest: input, result, context };
+        }
+    }
+}
+
+/**
+ * Parser class for filtering of parsers.
+ * 
+ * @template T - parser domain.
+ * @template S - range of the original parser.
+ * @template E - error type.
+ * @template C - context type.
+ */
+class ParserFilter<T, S, E, C> extends Parser<T, S, E, C>
+{
+    private readonly _parser: Parser<T, S, E, C>;
+    private readonly _condition: (value: S) => boolean;
+    private readonly _error: (value: S) => E;
+
+    /**
+     * @param parser - original parser.
+     * @param condition - condition to match, or else the parser will fail.
+     * @param error - error to be returned upon failure.
+     */
+    constructor(
+        parser: Parser<T, S, E, C>,
+        condition: (value: S) => boolean,
+        error: (value: S) => E
+    )
+    {
+        super(parser.contextProvider);
+        this._parser = parser;
+        this._condition = condition;
+        this._error = error;
+    }
+
+    runT(input: T, context: C): Parsing<T, S, E, C>
+    {
+        const {
+            rest,
+            result,
+            context: resultContext
+        } = this._parser.runT(input, context);
+
+        if (result.success)
+        {
+            if (this._condition(result.parsed))
+            {
+                return {
+                    rest,
+                    result,
+                    context: resultContext
+                };
+            }
+            else
+            {
+                return {
+                    rest: input,
+                    result: {
+                        success: false,
+                        error: this._error(result.parsed)
+                    },
+                    context
+                };
+            }
         }
         else
         {
@@ -476,4 +556,50 @@ class PureParser<T, S, C> extends Parser<T, S, never, C>
 export function pure<T, S, C>(value: S): PureParser<T, S, C>
 {
     return new PureParser(value);
+}
+
+/**
+ * Parser class for pure errors.
+ * 
+ * @template T - parser domain.
+ * @template E - parser error type.
+ */
+class ErrorParser<T, E, C> extends Parser<T, never, E, C>
+{
+    private readonly _value: E;
+
+    /**
+     * @param value - return value.
+     */
+    constructor(value: E)
+    {
+        super(() =>
+        {
+            throw 'error parser must not be run directly and without a context';
+        });
+
+        this._value = value;
+    }
+
+    runT(input: T, context: C): Parsing<T, never, E, C>
+    {
+        return {
+            rest: input,
+            result: {
+                success: false,
+                error: this._value
+            },
+            context
+        };
+    }
+}
+
+/**
+ * Creates a parser that always returns an error.
+ * 
+ * @param value - error to be returned.
+ */
+export function error<T, E, C>(value: E): ErrorParser<T, E, C>
+{
+    return new ErrorParser(value);
 }

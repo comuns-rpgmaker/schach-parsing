@@ -64,7 +64,7 @@ class DigitParser extends TextParser<number, CharParserError>
 }
 
 /**
- * Specialized parser that accepts a single arabic digit.
+ * Specialized parser that accepts a single character that matches a condition.
  */
 class PredicateParser extends TextParser<number, CharParserError>
 {
@@ -159,15 +159,25 @@ export const digit = Parser.of(() => new DigitParser());
  */
 export const letter = Parser.of(() => new PredicateParser(
     (c: number) => (65 <= c && c <= 90) || (97 <= c && c <= 122),
-    "A-Z/a-z"));
+    "A-Z/a-z")
+    .map(c => String.fromCodePoint(c)));
+
+/**
+ * @param predicate - condition to match.
+ * @param name - name of the condition to be used on error messages.
+ * 
+ * @returns a parser for a characer that matches the given condition.
+ */
+export const predicate = (p: (c: number) => boolean, name: string) =>
+    new PredicateParser(p, name);
 
 /**
  * @returns a parser for a single arabic digit (0-9).
  */
 export const alphanumeric = Parser.of(() =>
     letter()
-    .or(digit())
-    .map(c => String.fromCodePoint(c)));
+    .or(digit().map(n => n.toString()))
+    .mapError(({ actual }) => ({ actual, expected: 'A-z, 0-9' })));
 
 /**
  * @returns a parser that matches any number of spaces.
