@@ -31,9 +31,18 @@ export type GameVariableExpression = {
 };
 
 /**
+ * Type for a free variable expression.
+ */
+export type FreeVariableExpression = {
+    type: 'free_variable',
+    name: string
+};
+
+/**
  * Generic type for value expressions.
  */
-type ValueExpression = NumberExpression | GameVariableExpression;
+type ValueExpression = NumberExpression | GameVariableExpression
+                        | FreeVariableExpression;
 
 /**
  * Type for an operator expression.

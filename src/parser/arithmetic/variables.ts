@@ -9,14 +9,15 @@
  */
 
 import { Parser } from 'parser/base';
-import { char, StringParserError, TextParser } from 'parser/text';
-import { expression, GameVariableExpression } from 'parser/arithmetic';
+import { alphanumeric, char, string, StringParserError, TextParser } from 'parser/text';
+import { expression, FreeVariableExpression, GameVariableExpression } from 'parser/arithmetic';
+import { many1 } from 'parser/combinators';
 
 /**
  * @returns a parser that accepts a variable expression in the format
  *          `v[<expression>]` and returns a VariableExpression object.
  */
-export const variableExpression = Parser.of(
+export const gameVariableExpression = Parser.of(
     (): TextParser<GameVariableExpression, StringParserError> => 
         char('v')
         .dropThen(char('['))
@@ -26,3 +27,17 @@ export const variableExpression = Parser.of(
                 id: expr
             })))
         .thenDrop(char(']')));
+
+const name =
+    many1(alphanumeric().or(char('_')))
+    .map(chars => chars.join(''))
+    .mapError(e => ({ actual: e.actual, expected: 'name' }));
+
+export const freeVariableExpression = Parser.of(
+    (): TextParser<FreeVariableExpression, StringParserError> => 
+        char('#')
+        .dropThen(name)
+        .map<FreeVariableExpression>(name => ({
+            type: 'free_variable',
+            name
+        })));

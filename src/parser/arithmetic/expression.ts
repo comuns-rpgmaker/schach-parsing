@@ -15,7 +15,8 @@ import {
     Expression,
     operation,
     numberExpression,
-    variableExpression
+    gameVariableExpression,
+    freeVariableExpression
 } from 'parser/arithmetic';
 
 /**
@@ -36,7 +37,8 @@ export const expression = Parser.of(
         const valueExpr =
             parensExpr()
             .or(numberExpression())
-            .or(variableExpression());
+            .or(freeVariableExpression())
+            .or(gameVariableExpression());
         
         return operation(valueExpr).or(valueExpr);
     });

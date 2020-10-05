@@ -64,6 +64,57 @@ class DigitParser extends TextParser<number, CharParserError>
 }
 
 /**
+ * Specialized parser that accepts a single arabic digit.
+ */
+class PredicateParser extends TextParser<number, CharParserError>
+{
+    private readonly _predicate: (c: number) => boolean;
+    private readonly _expected: string;
+
+    constructor(predicate: (c: number) => boolean, expected: string)
+    {
+        super();
+        this._predicate = predicate;
+        this._expected = expected;
+    }
+
+    runT(input: string, context: TextContext): TextParsing<number, CharParserError>
+    {
+        const codePoint = input.codePointAt(context.offset.index);
+
+        if (codePoint && this._predicate(codePoint))
+        {
+            return {
+                rest: input,
+                context: context.withOffset({ index: 1, column: 1 }),
+                result: {
+                    success: true,
+                    parsed: codePoint
+                }
+            };
+        }
+        else
+        {
+            const actual = typeof codePoint === 'undefined'
+                            ? '<eos>'
+                            : String.fromCodePoint(codePoint);
+
+            return {
+                rest: input,
+                context,
+                result: {
+                    success: false,
+                    error: {
+                        expected: this._expected,
+                        actual
+                    }
+                }
+            };
+        }
+    }
+}
+
+/**
  * Specialized parser that matches the end of the string.
  */
 class EOSParser extends TextParser<undefined, CharParserError>
@@ -104,12 +155,27 @@ class EOSParser extends TextParser<undefined, CharParserError>
 export const digit = Parser.of(() => new DigitParser());
 
 /**
+ * @returns a parser for a single letter (a-z, A-Z).
+ */
+export const letter = Parser.of(() => new PredicateParser(
+    (c: number) => (65 <= c && c <= 90) || (97 <= c && c <= 122),
+    "A-Z/a-z"));
+
+/**
+ * @returns a parser for a single arabic digit (0-9).
+ */
+export const alphanumeric = Parser.of(() =>
+    letter()
+    .or(digit())
+    .map(c => String.fromCodePoint(c)));
+
+/**
  * @returns a parser that matches any number of spaces.
  */
 export const spaces = Parser.of((): TextParser<string, never> =>
     char(' ')
-        .flatMap(s => spaces().map(t => s + t))
-        .or(pure('')));
+    .flatMap(s => spaces().map(t => s + t))
+    .or(pure('')));
 
 /**
  * @returns a parser that matches the end of the string.
