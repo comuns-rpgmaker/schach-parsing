@@ -1,4 +1,4 @@
-import { string, TextContext } from '../../src/parser/text';
+import { string, TextContext } from 'parser/text';
 
 describe('Running a string parser', () =>
 {

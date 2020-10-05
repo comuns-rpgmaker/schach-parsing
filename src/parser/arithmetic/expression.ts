@@ -8,13 +8,17 @@
  * Core defintion of the arithmetic expression parser.
  */
 
-import { Parser } from '../base';
+import { Parser } from 'parser/base';
+import { TextParser, char, spaces, StringParserError } from 'parser/text';
 
-import { TextParser, char, spaces, StringParserError } from '../text';
-
-import { Expression } from './model';
-import { operation } from './operators';
-import { numberExpression } from './numbers';
+import {
+    Expression,
+    operation,
+    numberExpression,
+    gameVariableExpression,
+    freeVariableExpression
+} from 'parser/arithmetic';
+import { functionCall } from './functions';
 
 /**
  * @returns a parser that parses an arithmetic expression into a tree of
@@ -23,14 +27,20 @@ import { numberExpression } from './numbers';
 export const expression = Parser.of(
     (): TextParser<Expression, StringParserError> =>
     {
-        const parensExpr = Parser.of((): TextParser<Expression, StringParserError> =>
-            char('(')
-                .dropThen(spaces())
-                .flatMap(() => expression())
-                .thenDrop(spaces())
-                .thenDrop(char(')')));
+        const parensExpr = Parser.of(
+            (): TextParser<Expression, StringParserError> =>
+                char('(')
+                    .dropThen(spaces())
+                    .flatMap(() => expression())
+                    .thenDrop(spaces())
+                    .thenDrop(char(')')));
 
-        const valueExpr = parensExpr().or(numberExpression());
+        const valueExpr =
+            parensExpr()
+            .or(numberExpression())
+            .or(freeVariableExpression())
+            .or(gameVariableExpression())
+            .or(functionCall());
         
         return operation(valueExpr).or(valueExpr);
     });

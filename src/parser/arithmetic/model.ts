@@ -23,6 +23,37 @@ export type NumberExpression = {
 };
 
 /**
+ * Type for a variable expression.
+ */
+export type GameVariableExpression = {
+    type: 'game_variable',
+    id: Expression
+};
+
+/**
+ * Type for a free variable expression.
+ */
+export type FreeVariableExpression = {
+    type: 'free_variable',
+    name: string
+};
+
+/**
+ * Type for a function call expression.
+ */
+export type FunctionCallExpression = {
+    type: 'function_call',
+    name: string,
+    args: Expression[]
+};
+
+/**
+ * Generic type for value expressions.
+ */
+type ValueExpression = NumberExpression | GameVariableExpression
+                        | FreeVariableExpression | FunctionCallExpression;
+
+/**
  * Type for an operator expression.
  */
 export type OperatorExpression = {
@@ -35,4 +66,4 @@ export type OperatorExpression = {
 /**
  * Type for an arithmetic expression tree.
  */
-export type Expression = NumberExpression | OperatorExpression;
+export type Expression = ValueExpression | OperatorExpression;

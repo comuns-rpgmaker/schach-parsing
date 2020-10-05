@@ -1,13 +1,14 @@
 {
     "compilerOptions": {
-        "target": "ES5",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "target": "ES6",
         "lib": ["ES5", "ES6", "DOM"],
-        "sourceMap": true,
-        "rootDir": "src",
         "downlevelIteration": true,
         "removeComments": true,
-        "strictNullChecks": true
+        "strictNullChecks": true,
+        "baseUrl": "src"
     },
-    "include": ["src/**/*"],
-    "exclude": ["node_modules", "**/*.spec.ts"]
+    "include": ["src/**/*", "spec/**/*"],
+    "exclude": ["node_modules"]
 }

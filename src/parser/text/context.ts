@@ -1,5 +1,5 @@
 /**
- * @file base.ts
+ * @file context.ts
  * 
  * @author Brandt
  * @date 2020/09/07
@@ -22,7 +22,7 @@ export type TextOffset = {
  */
 export class TextContext
 {
-    readonly _offset: TextOffset;
+    private readonly _offset: TextOffset;
 
     constructor(offset: TextOffset = { index: 0, row: 1, column: 1 })
     {
