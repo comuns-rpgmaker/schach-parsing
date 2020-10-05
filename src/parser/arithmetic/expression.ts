@@ -18,6 +18,7 @@ import {
     gameVariableExpression,
     freeVariableExpression
 } from 'parser/arithmetic';
+import { functionCall } from './functions';
 
 /**
  * @returns a parser that parses an arithmetic expression into a tree of
@@ -38,7 +39,8 @@ export const expression = Parser.of(
             parensExpr()
             .or(numberExpression())
             .or(freeVariableExpression())
-            .or(gameVariableExpression());
+            .or(gameVariableExpression())
+            .or(functionCall());
         
         return operation(valueExpr).or(valueExpr);
     });

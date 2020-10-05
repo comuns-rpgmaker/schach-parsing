@@ -32,7 +32,7 @@ const build = (
 
 const OPERATORS: Record<string, Operator> = {
     '+': build(0, (a, b) => a + b),
-    '-': build(0, (a, b) => a - b),
+    '-': build(0.5, (a, b) => a - b),
     '/': build(1, (a, b) => a / b),
     '*': build(1, (a, b) => a * b),
     '^': build(2, Math.pow)
@@ -71,7 +71,8 @@ export const operation = (valueExpr: TextParser<Expression, StringParserError>):
                 .map(([left, op]) => ({ ...op, left }))
                 .thenDrop(spaces())
                 .flatMap(op =>
-                    self().map(balanceOperators(op))
+                    self()
+                    .map(balanceOperators(op))
                     .or(valueExpr.map(right => ({ ...op, right })))));
 
         return self();

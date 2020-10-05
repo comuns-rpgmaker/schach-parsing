@@ -39,10 +39,19 @@ export type FreeVariableExpression = {
 };
 
 /**
+ * Type for a function call expression.
+ */
+export type FunctionCallExpression = {
+    type: 'function_call',
+    name: string,
+    args: Expression[]
+};
+
+/**
  * Generic type for value expressions.
  */
 type ValueExpression = NumberExpression | GameVariableExpression
-                        | FreeVariableExpression;
+                        | FreeVariableExpression | FunctionCallExpression;
 
 /**
  * Type for an operator expression.
