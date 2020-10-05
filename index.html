@@ -66,16 +66,14 @@
 				<p><img src="https://github.com/comuns-rpgmaker/schach-parsing/workflows/Docs/badge.svg" alt="Docs">
 					<img src="https://github.com/comuns-rpgmaker/schach-parsing/workflows/Tests/badge.svg" alt="Tests">
 				<a href="https://codecov.io/gh/comuns-rpgmaker/schach-parsing"><img src="https://codecov.io/gh/comuns-rpgmaker/schach-parsing/branch/master/graph/badge.svg" alt="codecov"></a></p>
-				<p><strong>IMPORTANT:</strong> this plugin is still in its early development stages, and
-					drastic API changes can (and probably will) occur without previous notice. We
-				do not recommend using it for actual plugins at the moment.</p>
 				<p>This plugin provides a core library with Parsing functionality.</p>
 				<p><strong>Example usage:</strong></p>
-				<pre><code class="language-typescript">&gt; <span class="hljs-keyword">let</span> { parsed: expr } = Schach.Parsing.Arithmetic.expression().run(<span class="hljs-string">&quot;1 + 2 + 3 + 4 * 5 + 6&quot;</span>)
-&lt; <span class="hljs-literal">undefined</span>
+				<pre><code class="language-typescript"><span class="hljs-keyword">const</span> { expression, evaluate } = Schach.Parsing.Arithmetic;
 
-&gt; Schach.Parsing.Arithmetic.evaluate(expr)
-&lt; <span class="hljs-number">32</span></code></pre>
+<span class="hljs-keyword">const</span> { parsed: expr } = expression().run(<span class="hljs-string">&quot;#x^4 - log2(#y)&quot;</span>)
+
+evaluate(expr, { variables: { x: <span class="hljs-number">5</span>, y: <span class="hljs-number">32</span> } })
+<span class="hljs-comment">// returns 5^4 - log2(32) = 625 - 5 = 620</span></code></pre>
 				<a href="#getting-started-developers" id="getting-started-developers" style="color: inherit; text-decoration: none;">
 					<h2>Getting Started (Developers)</h2>
 				</a>

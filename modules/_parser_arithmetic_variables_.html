@@ -84,7 +84,7 @@
 					<div class="tsd-signature tsd-kind-icon">free<wbr>Variable<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;FreeVariableExpression, StringParserError&gt; &#x3D;&gt;char(&#x27;#&#x27;).dropThen(name()).map&lt;FreeVariableExpression&gt;(name &#x3D;&gt; ({type: &#x27;free_variable&#x27;,name})))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/variables.ts#L41">parser/arithmetic/variables.ts:41</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/f032883/src/parser/arithmetic/variables.ts#L41">parser/arithmetic/variables.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -117,7 +117,7 @@
 					<div class="tsd-signature tsd-kind-icon">game<wbr>Variable<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;GameVariableExpression, StringParserError&gt; &#x3D;&gt;char(&#x27;v&#x27;).dropThen(char(&#x27;[&#x27;)).flatMap(() &#x3D;&gt;expression().map&lt;GameVariableExpression&gt;(expr &#x3D;&gt; ({type: &#x27;game_variable&#x27;,id: expr}))).thenDrop(char(&#x27;]&#x27;)))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/variables.ts#L26">parser/arithmetic/variables.ts:26</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/f032883/src/parser/arithmetic/variables.ts#L26">parser/arithmetic/variables.ts:26</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
