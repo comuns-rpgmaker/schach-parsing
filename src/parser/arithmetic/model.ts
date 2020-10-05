@@ -14,6 +14,27 @@
 export type Operator =
     ((a: number, b: number) => number) & { priority: number };
 
+const operator = (
+    priority: number,
+    f: (a: number, b: number) => number
+): Operator =>
+{
+    const op = f as Operator;
+    op.priority = priority;
+    return op;
+}
+
+/**
+ * Map of available operators.
+ */
+export const OPERATORS = {
+    '+': operator(0, (a, b) => a + b),
+    '-': operator(0, (a, b) => a - b),
+    '/': operator(1, (a, b) => a / b),
+    '*': operator(1, (a, b) => a * b),
+    '^': operator(2, Math.pow)
+};
+
 /**
  * Type for an expression with a simple number.
  */
@@ -58,7 +79,7 @@ type ValueExpression = NumberExpression | GameVariableExpression
  */
 export type OperatorExpression = {
     type: 'operator',
-    operator: Operator,
+    operator: keyof typeof OPERATORS,
     left: Expression,
     right: Expression
 };

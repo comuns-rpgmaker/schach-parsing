@@ -8,7 +8,7 @@
  * Evaluation function definition.
  */
 
-import { Expression } from 'parser/arithmetic';
+import { Expression, OPERATORS } from 'parser/arithmetic';
 
 import { $gameVariables } from 'rmmz';
 
@@ -100,7 +100,7 @@ export function evaluate(
             return f(...args);
         
         case 'operator':
-            return expr.operator(
+            return OPERATORS[expr.operator](
                 evaluate(expr.left, options),
                 evaluate(expr.right, options)
             );

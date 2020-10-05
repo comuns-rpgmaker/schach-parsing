@@ -18,28 +18,10 @@ import {
     StringParserError
 } from 'parser/text';
 
-import { Operator, OperatorExpression, Expression } from './model';
+import { OPERATORS, OperatorExpression, Expression } from './model';
 
-const build = (
-    priority: number,
-    f: (a: number, b: number) => number
-): Operator =>
-{
-    const op = f as Operator;
-    op.priority = priority;
-    return op;
-}
-
-const OPERATORS: Record<string, Operator> = {
-    '+': build(0, (a, b) => a + b),
-    '-': build(0, (a, b) => a - b),
-    '/': build(1, (a, b) => a / b),
-    '*': build(1, (a, b) => a * b),
-    '^': build(2, Math.pow)
-};
-
-const before = (left: Operator, right: Operator): boolean =>
-    left.priority >= right.priority;
+const before = (left: string, right: string): boolean =>
+    OPERATORS[left].priority >= OPERATORS[right].priority;
 
 type LeftOperatorExpression = Omit<OperatorExpression, "right">;
 type OperatorOnlyExpression = Omit<LeftOperatorExpression, "left">;
@@ -47,8 +29,7 @@ type OperatorOnlyExpression = Omit<LeftOperatorExpression, "left">;
 const operator: TextParser<OperatorOnlyExpression, StringParserError> =
     oneOf(...Object.keys(OPERATORS).map(string))
     .mapError(() => ({ expected: `one of ${Object.keys(OPERATORS).join(', ')}` }))
-    .map(op => OPERATORS[op])
-    .map(f => ({ type: 'operator', operator: f }) as OperatorOnlyExpression);
+    .map(op => ({ type: 'operator', operator: op }) as OperatorOnlyExpression)
 
 const balanceOperators =
     (left: LeftOperatorExpression) =>
