@@ -32,14 +32,14 @@ const build = (
 
 const OPERATORS: Record<string, Operator> = {
     '+': build(0, (a, b) => a + b),
-    '-': build(0.5, (a, b) => a - b),
+    '-': build(0, (a, b) => a - b),
     '/': build(1, (a, b) => a / b),
     '*': build(1, (a, b) => a * b),
     '^': build(2, Math.pow)
 };
 
 const before = (left: Operator, right: Operator): boolean =>
-    left.priority > right.priority;
+    left.priority >= right.priority;
 
 type LeftOperatorExpression = Omit<OperatorExpression, "right">;
 type OperatorOnlyExpression = Omit<LeftOperatorExpression, "left">;
@@ -54,7 +54,13 @@ const balanceOperators =
     (left: LeftOperatorExpression) =>
     (right: OperatorExpression): OperatorExpression =>
         before(left.operator, right.operator)
-        ? { ...right, left: { ...left, right: right.left } }
+        ?
+        {
+            ...right,
+            left: right.left.type === 'operator'
+                ? balanceOperators(left)(right.left)
+                : { ...left, right: right.left }
+        }
         : { ...left, right };
 
 /**
