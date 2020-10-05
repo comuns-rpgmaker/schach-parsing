@@ -4,20 +4,17 @@
 ![Tests](https://github.com/comuns-rpgmaker/schach-parsing/workflows/Tests/badge.svg)
 [![codecov](https://codecov.io/gh/comuns-rpgmaker/schach-parsing/branch/master/graph/badge.svg)](https://codecov.io/gh/comuns-rpgmaker/schach-parsing)
 
-**IMPORTANT:** this plugin is still in its early development stages, and
-drastic API changes can (and probably will) occur without previous notice. We
-do not recommend using it for actual plugins at the moment.
-
 This plugin provides a core library with Parsing functionality.
 
 **Example usage:**
 
 ```typescript
-> let { parsed: expr } = Schach.Parsing.Arithmetic.expression().run("1 + 2 + 3 + 4 * 5 + 6")
-< undefined
+const { expression, evaluate } = Schach.Parsing.Arithmetic;
 
-> Schach.Parsing.Arithmetic.evaluate(expr)
-< 32
+const { parsed: expr } = expression().run("#x^4 - log2(#y)")
+
+evaluate(expr, { variables: { x: 5, y: 32 } })
+// returns 5^4 - log2(32) = 625 - 5 = 620
 ```
 
 
