@@ -13,6 +13,13 @@ import { Expression } from 'parser/arithmetic';
 import { $gameVariables } from 'rmmz';
 
 /**
+ * Type for options to be passed into the evaluate function.
+ */
+type EvaluateOptions = {
+    variables: Record<string, number>
+}
+
+/**
  * Evaluates a parsed tree of operations/values.
  * 
  * @param expr - parsed expression.
@@ -22,7 +29,7 @@ import { $gameVariables } from 'rmmz';
  */
 export function evaluate(
     expr: Expression,
-    variables?: Record<string, number>
+    options: Partial<EvaluateOptions>
 ): number
 {
     if (expr.type === 'number')
@@ -31,23 +38,23 @@ export function evaluate(
     }
     else if (expr.type === 'game_variable')
     {
-        return $gameVariables.value(evaluate(expr.id, variables));
+        return $gameVariables.value(evaluate(expr.id, options));
     }
     else if (expr.type === 'free_variable')
     {
-        if (!variables || !(expr.name in variables))
+        if (!options.variables || !(expr.name in options.variables))
         {
             throw new ReferenceError(
                 `Missing value for variable "${expr.name}"`);
         }
 
-        return variables[expr.name];
+        return options.variables[expr.name];
     }
     else
     {
         return expr.operator(
-            evaluate(expr.left, variables),
-            evaluate(expr.right, variables)
+            evaluate(expr.left, options),
+            evaluate(expr.right, options)
         );
     }
 }
