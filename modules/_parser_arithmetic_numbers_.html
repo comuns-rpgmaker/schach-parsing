@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -74,6 +72,7 @@
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_numbers_.html#integer" class="tsd-kind-icon">integer</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_numbers_.html#number" class="tsd-kind-icon">number</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_numbers_.html#numberexpression" class="tsd-kind-icon">number<wbr>Expression</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_numbers_.html#unsigned" class="tsd-kind-icon">unsigned</a></li>
 							</ul>
 						</section>
 					</div>
@@ -87,7 +86,7 @@
 					<div class="tsd-signature tsd-kind-icon">integer<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;number, CharParserError&gt; &#x3D;&gt;many1(digit()).map(digits &#x3D;&gt; digits.reduce((acc, n) &#x3D;&gt; acc * 10 + n)))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/87e9257/src/parser/arithmetic/numbers.ts#L22">parser/arithmetic/numbers.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/numbers.ts#L22">parser/arithmetic/numbers.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -117,17 +116,16 @@
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="number" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> number</h3>
-					<div class="tsd-signature tsd-kind-icon">number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;number, CharParserError&gt; &#x3D;&gt;sign.flatMap(bit &#x3D;&gt;integer().zip(floatingPoint).map(([n, f]) &#x3D;&gt; bit * (n + f)).or(floatingPoint).flatMap(n &#x3D;&gt; exponent.map(e &#x3D;&gt; n * e))))</span></div>
+					<div class="tsd-signature tsd-kind-icon">number<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;number, CharParserError&gt; &#x3D;&gt;sign.or(pure(1)).zip(unsigned()).map(([bit, n]) &#x3D;&gt; bit * n).mapError(({ actual }) &#x3D;&gt; ({ expected: &#x27;number&#x27;, actual })))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/87e9257/src/parser/arithmetic/numbers.ts#L48">parser/arithmetic/numbers.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/numbers.ts#L54">parser/arithmetic/numbers.ts:54</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>returns</dt>
-							<dd><p>a parser that accepts a string of digits and/or a floating point
-								expression and returns a number.</p>
+							<dd><p>a parser that accepts a string and returns a signed number.</p>
 							</dd>
 						</dl>
 					</div>
@@ -153,7 +151,7 @@
 					<div class="tsd-signature tsd-kind-icon">number<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;NumberExpression, CharParserError&gt; &#x3D;&gt;number().map(value &#x3D;&gt; ({ type: &#x27;number&#x27;, value })))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/87e9257/src/parser/arithmetic/numbers.ts#L59">parser/arithmetic/numbers.ts:59</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/numbers.ts#L63">parser/arithmetic/numbers.ts:63</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -161,6 +159,39 @@
 							<dt>returns</dt>
 							<dd><p>a parser that accepts a string of digits and/or a floating point
 								expression and returns a number expression.</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="unsigned" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> unsigned</h3>
+					<div class="tsd-signature tsd-kind-icon">unsigned<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;number, CharParserError&gt; &#x3D;&gt;integer().zip(floatingPoint.or(pure(0))).map(([n, f]) &#x3D;&gt; n + f).or(floatingPoint).zip(exponent.or(pure(1))).map(([n, e]) &#x3D;&gt; n * e).mapError(({ actual }) &#x3D;&gt; ({ expected: &#x27;unsigned&#x27;, actual })))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/numbers.ts#L44">parser/arithmetic/numbers.ts:44</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser that accepts a string of digits and/or a floating point
+								expression and returns an unsigned number.</p>
 							</dd>
 						</dl>
 					</div>
@@ -198,16 +229,25 @@
 						<a href="_parser_arithmetic_expression_.html">&quot;parser/arithmetic/expression&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_functions_.html">&quot;parser/arithmetic/functions&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_index_.html">&quot;parser/arithmetic/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_model_.html">&quot;parser/arithmetic/model&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_name_.html">&quot;parser/arithmetic/name&quot;</a>
 					</li>
 					<li class="current tsd-kind-module">
 						<a href="_parser_arithmetic_numbers_.html">&quot;parser/arithmetic/numbers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_operators_.html">&quot;parser/arithmetic/operators&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_variables_.html">&quot;parser/arithmetic/variables&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_base_.html">&quot;parser/base&quot;</a>
@@ -251,6 +291,9 @@
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="_parser_arithmetic_numbers_.html#numberexpression" class="tsd-kind-icon">number<wbr>Expression</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_parser_arithmetic_numbers_.html#unsigned" class="tsd-kind-icon">unsigned</a>
 					</li>
 				</ul>
 			</nav>

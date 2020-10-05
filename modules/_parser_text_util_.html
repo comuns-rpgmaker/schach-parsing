@@ -38,8 +38,6 @@
 							</div>
 							<input type="checkbox" id="tsd-filter-inherited" checked />
 							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
-							<input type="checkbox" id="tsd-filter-externals" checked />
-							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
 						</div>
 					</div>
 					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
@@ -71,8 +69,17 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_text_util_.html#alphanumeric" class="tsd-kind-icon">alphanumeric</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_text_util_.html#digit" class="tsd-kind-icon">digit</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_text_util_.html#eos" class="tsd-kind-icon">eos</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_text_util_.html#letter" class="tsd-kind-icon">letter</a></li>
 								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_text_util_.html#spaces" class="tsd-kind-icon">spaces</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section ">
+							<h3>Functions</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_parser_text_util_.html#predicate" class="tsd-kind-icon">predicate</a></li>
 							</ul>
 						</section>
 					</div>
@@ -81,12 +88,12 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="digit" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> digit</h3>
-					<div class="tsd-signature tsd-kind-icon">digit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of(() &#x3D;&gt; new DigitParser())</span></div>
+					<a name="alphanumeric" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> alphanumeric</h3>
+					<div class="tsd-signature tsd-kind-icon">alphanumeric<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of(() &#x3D;&gt;letter().or(digit().map(n &#x3D;&gt; n.toString())).mapError(({ actual }) &#x3D;&gt; ({ actual, expected: &#x27;A-z, 0-9&#x27; })))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/87e9257/src/parser/text/util.ts#L73">parser/text/util.ts:73</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/text/util.ts#L177">parser/text/util.ts:177</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -113,12 +120,108 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="digit" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> digit</h3>
+					<div class="tsd-signature tsd-kind-icon">digit<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of(() &#x3D;&gt; new DigitParser())</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/text/util.ts#L155">parser/text/util.ts:155</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser for a single arabic digit (0-9).</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="eos" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> eos</h3>
+					<div class="tsd-signature tsd-kind-icon">eos<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of(() &#x3D;&gt; new EOSParser())</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/text/util.ts#L193">parser/text/util.ts:193</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser that matches the end of the string.</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="letter" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> letter</h3>
+					<div class="tsd-signature tsd-kind-icon">letter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of(() &#x3D;&gt; new PredicateParser((c: number) &#x3D;&gt; (65 &lt;&#x3D; c &amp;&amp; c &lt;&#x3D; 90) || (97 &lt;&#x3D; c &amp;&amp; c &lt;&#x3D; 122),&quot;A-Z/a-z&quot;).map(c &#x3D;&gt; String.fromCodePoint(c)))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/text/util.ts#L160">parser/text/util.ts:160</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser for a single letter (a-z, A-Z).</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
 					<a name="spaces" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagConst">Const</span> spaces</h3>
 					<div class="tsd-signature tsd-kind-icon">spaces<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;string, never&gt; &#x3D;&gt;char(&#x27; &#x27;).flatMap(s &#x3D;&gt; spaces().map(t &#x3D;&gt; s + t)).or(pure(&#x27;&#x27;)))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/87e9257/src/parser/text/util.ts#L78">parser/text/util.ts:78</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/text/util.ts#L185">parser/text/util.ts:185</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -145,6 +248,62 @@
 					</div>
 				</section>
 			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Functions</h2>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
+					<a name="predicate" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> predicate</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
+						<li class="tsd-signature tsd-kind-icon">predicate<span class="tsd-signature-symbol">(</span>p<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span>, name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PredicateParser</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/text/util.ts#L171">parser/text/util.ts:171</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<p>condition to match.</p>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>p: <span class="tsd-signature-symbol">(</span>c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">boolean</span></h5>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>c<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>c: <span class="tsd-signature-type">number</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+								<li>
+									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>name of the condition to be used on error messages.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">PredicateParser</span></h4>
+							<p>a parser for a characer that matches the given condition.</p>
+						</li>
+					</ul>
+				</section>
+			</section>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 			<nav class="tsd-navigation primary">
@@ -162,16 +321,25 @@
 						<a href="_parser_arithmetic_expression_.html">&quot;parser/arithmetic/expression&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_functions_.html">&quot;parser/arithmetic/functions&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_index_.html">&quot;parser/arithmetic/index&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_model_.html">&quot;parser/arithmetic/model&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_name_.html">&quot;parser/arithmetic/name&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_numbers_.html">&quot;parser/arithmetic/numbers&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_operators_.html">&quot;parser/arithmetic/operators&quot;</a>
+					</li>
+					<li class=" tsd-kind-module">
+						<a href="_parser_arithmetic_variables_.html">&quot;parser/arithmetic/variables&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
 						<a href="_parser_base_.html">&quot;parser/base&quot;</a>
@@ -208,10 +376,22 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_parser_text_util_.html#alphanumeric" class="tsd-kind-icon">alphanumeric</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="_parser_text_util_.html#digit" class="tsd-kind-icon">digit</a>
 					</li>
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_parser_text_util_.html#eos" class="tsd-kind-icon">eos</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_parser_text_util_.html#letter" class="tsd-kind-icon">letter</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
 						<a href="_parser_text_util_.html#spaces" class="tsd-kind-icon">spaces</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module">
+						<a href="_parser_text_util_.html#predicate" class="tsd-kind-icon">predicate</a>
 					</li>
 				</ul>
 			</nav>

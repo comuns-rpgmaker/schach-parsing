@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;parser/arithmetic/evaluate&quot; | schach-parsing</title>
+	<title>&quot;parser/arithmetic/name&quot; | schach-parsing</title>
 	<meta name="description" content="Documentation for schach-parsing">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_parser_arithmetic_evaluate_.html">&quot;parser/arithmetic/evaluate&quot;</a>
+					<a href="_parser_arithmetic_name_.html">&quot;parser/arithmetic/name&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;parser/arithmetic/evaluate&quot;</h1>
+			<h1>Module &quot;parser/arithmetic/name&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -67,85 +67,48 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Type aliases</h3>
+							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-type-alias tsd-parent-kind-module"><a href="_parser_arithmetic_evaluate_.html#evaluateoptions" class="tsd-kind-icon">Evaluate<wbr>Options</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section ">
-							<h3>Functions</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module"><a href="_parser_arithmetic_evaluate_.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_name_.html#name" class="tsd-kind-icon">name</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Type aliases</h2>
-				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-module">
-					<a name="evaluateoptions" class="tsd-anchor"></a>
-					<h3>Evaluate<wbr>Options</h3>
-					<div class="tsd-signature tsd-kind-icon">Evaluate<wbr>Options<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">{ </span>functions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">; </span>variables<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> }</span></div>
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="name" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of(() &#x3D;&gt;many1(alphanumeric().or(char(&#x27;_&#x27;))).map(chars &#x3D;&gt; chars.join(&#x27;&#x27;)).mapError(e &#x3D;&gt; ({ actual: e.actual, expected: &#x27;name&#x27; })))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/evaluate.ts#L47">parser/arithmetic/evaluate.ts:47</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/name.ts#L20">parser/arithmetic/name.ts:20</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>Type for options to be passed into the evaluate function.</p>
-						</div>
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser that accepts a valid alphanumeric (plus _) name for
+								a variable/function.</p>
+							</dd>
+						</dl>
 					</div>
 					<div class="tsd-type-declaration">
 						<h4>Type declaration</h4>
 						<ul class="tsd-parameters">
-							<li class="tsd-parameter">
-								<h5>functions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>args<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h5>
-							</li>
-							<li class="tsd-parameter">
-								<h5>variables<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h5>
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
 							</li>
 						</ul>
 					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module">
-					<a name="evaluate" class="tsd-anchor"></a>
-					<h3>evaluate</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module">
-						<li class="tsd-signature tsd-kind-icon">evaluate<span class="tsd-signature-symbol">(</span>expr<span class="tsd-signature-symbol">: </span><a href="_parser_arithmetic_model_.html#expression" class="tsd-signature-type">Expression</a>, options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="_parser_arithmetic_evaluate_.html#evaluateoptions" class="tsd-signature-type">EvaluateOptions</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/evaluate.ts#L60">parser/arithmetic/evaluate.ts:60</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Evaluates a parsed tree of operations/values.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>expr: <a href="_parser_arithmetic_model_.html#expression" class="tsd-signature-type">Expression</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>parsed expression.</p>
-									</div>
-								</li>
-								<li>
-									<h5>options: <span class="tsd-signature-type">Partial</span><span class="tsd-signature-symbol">&lt;</span><a href="_parser_arithmetic_evaluate_.html#evaluateoptions" class="tsd-signature-type">EvaluateOptions</a><span class="tsd-signature-symbol">&gt;</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>the result of the given expression.</p>
-						</li>
-					</ul>
 				</section>
 			</section>
 		</div>
@@ -158,7 +121,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_main_.html">&quot;main&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_evaluate_.html">&quot;parser/arithmetic/evaluate&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -173,7 +136,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_model_.html">&quot;parser/arithmetic/model&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_parser_arithmetic_name_.html">&quot;parser/arithmetic/name&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -219,11 +182,8 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-type-alias tsd-parent-kind-module">
-						<a href="_parser_arithmetic_evaluate_.html#evaluateoptions" class="tsd-kind-icon">Evaluate<wbr>Options</a>
-					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module">
-						<a href="_parser_arithmetic_evaluate_.html#evaluate" class="tsd-kind-icon">evaluate</a>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_parser_arithmetic_name_.html#name" class="tsd-kind-icon">name</a>
 					</li>
 				</ul>
 			</nav>

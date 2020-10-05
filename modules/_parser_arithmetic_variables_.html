@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>&quot;parser/arithmetic/expression&quot; | schach-parsing</title>
+	<title>&quot;parser/arithmetic/variables&quot; | schach-parsing</title>
 	<meta name="description" content="Documentation for schach-parsing">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -52,10 +52,10 @@
 					<a href="../globals.html">Globals</a>
 				</li>
 				<li>
-					<a href="_parser_arithmetic_expression_.html">&quot;parser/arithmetic/expression&quot;</a>
+					<a href="_parser_arithmetic_variables_.html">&quot;parser/arithmetic/variables&quot;</a>
 				</li>
 			</ul>
-			<h1>Module &quot;parser/arithmetic/expression&quot;</h1>
+			<h1>Module &quot;parser/arithmetic/variables&quot;</h1>
 		</div>
 	</div>
 </header>
@@ -69,7 +69,8 @@
 						<section class="tsd-index-section ">
 							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_expression_.html#expression" class="tsd-kind-icon">expression</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_variables_.html#freevariableexpression" class="tsd-kind-icon">free<wbr>Variable<wbr>Expression</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module"><a href="_parser_arithmetic_variables_.html#gamevariableexpression" class="tsd-kind-icon">game<wbr>Variable<wbr>Expression</a></li>
 							</ul>
 						</section>
 					</div>
@@ -78,19 +79,52 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Variables</h2>
 				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
-					<a name="expression" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagConst">Const</span> expression</h3>
-					<div class="tsd-signature tsd-kind-icon">expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;Expression, StringParserError&gt; &#x3D;&gt;{const parensExpr &#x3D; Parser.of((): TextParser&lt;Expression, StringParserError&gt; &#x3D;&gt;char(&#x27;(&#x27;).dropThen(spaces()).flatMap(() &#x3D;&gt; expression()).thenDrop(spaces()).thenDrop(char(&#x27;)&#x27;)));const valueExpr &#x3D;parensExpr().or(numberExpression()).or(freeVariableExpression()).or(gameVariableExpression()).or(functionCall());return operation(valueExpr).or(valueExpr);})</span></div>
+					<a name="freevariableexpression" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> free<wbr>Variable<wbr>Expression</h3>
+					<div class="tsd-signature tsd-kind-icon">free<wbr>Variable<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;FreeVariableExpression, StringParserError&gt; &#x3D;&gt;char(&#x27;#&#x27;).dropThen(name()).map&lt;FreeVariableExpression&gt;(name &#x3D;&gt; ({type: &#x27;free_variable&#x27;,name})))</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/expression.ts#L27">parser/arithmetic/expression.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/variables.ts#L41">parser/arithmetic/variables.ts:41</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<dl class="tsd-comment-tags">
 							<dt>returns</dt>
-							<dd><p>a parser that parses an arithmetic expression into a tree of
-								operations/values.</p>
+							<dd><p>a parser that accepts a free variables expression in the format
+								<code>#&lt;name&gt;</code> and returns a FreeVariableExpression object.</p>
+							</dd>
+						</dl>
+					</div>
+					<div class="tsd-type-declaration">
+						<h4>Type declaration</h4>
+						<ul class="tsd-parameters">
+							<li class="tsd-parameter-signature">
+								<ul class="tsd-signatures tsd-kind-type-literal tsd-parent-kind-variable">
+									<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></li>
+								</ul>
+								<ul class="tsd-descriptions">
+									<li class="tsd-description">
+										<h4 class="tsd-returns-title">Returns <a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span></h4>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module">
+					<a name="gamevariableexpression" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> game<wbr>Variable<wbr>Expression</h3>
+					<div class="tsd-signature tsd-kind-icon">game<wbr>Variable<wbr>Expression<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="../classes/_parser_base_.parser.html" class="tsd-signature-type">Parser</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">T</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">S</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">E</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">C</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> = Parser.of((): TextParser&lt;GameVariableExpression, StringParserError&gt; &#x3D;&gt;char(&#x27;v&#x27;).dropThen(char(&#x27;[&#x27;)).flatMap(() &#x3D;&gt;expression().map&lt;GameVariableExpression&gt;(expr &#x3D;&gt; ({type: &#x27;game_variable&#x27;,id: expr}))).thenDrop(char(&#x27;]&#x27;)))</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/comuns-rpgmaker/schach-parsing/blob/1b02e12/src/parser/arithmetic/variables.ts#L26">parser/arithmetic/variables.ts:26</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<dl class="tsd-comment-tags">
+							<dt>returns</dt>
+							<dd><p>a parser that accepts a variable expression in the format
+								<code>v[&lt;expression&gt;]</code> and returns a GameVariableExpression object.</p>
 							</dd>
 						</dl>
 					</div>
@@ -124,7 +158,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_evaluate_.html">&quot;parser/arithmetic/evaluate&quot;</a>
 					</li>
-					<li class="current tsd-kind-module">
+					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_expression_.html">&quot;parser/arithmetic/expression&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -145,7 +179,7 @@
 					<li class=" tsd-kind-module">
 						<a href="_parser_arithmetic_operators_.html">&quot;parser/arithmetic/operators&quot;</a>
 					</li>
-					<li class=" tsd-kind-module">
+					<li class="current tsd-kind-module">
 						<a href="_parser_arithmetic_variables_.html">&quot;parser/arithmetic/variables&quot;</a>
 					</li>
 					<li class=" tsd-kind-module">
@@ -183,7 +217,10 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-variable tsd-parent-kind-module">
-						<a href="_parser_arithmetic_expression_.html#expression" class="tsd-kind-icon">expression</a>
+						<a href="_parser_arithmetic_variables_.html#freevariableexpression" class="tsd-kind-icon">free<wbr>Variable<wbr>Expression</a>
+					</li>
+					<li class=" tsd-kind-variable tsd-parent-kind-module">
+						<a href="_parser_arithmetic_variables_.html#gamevariableexpression" class="tsd-kind-icon">game<wbr>Variable<wbr>Expression</a>
 					</li>
 				</ul>
 			</nav>
